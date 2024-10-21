@@ -48,7 +48,14 @@ function Header() {
     <div className="flex items-center justify-between ml-4 mr-4 mt-1">
       <div className="flex items-center gap-20 right-4">
         <Link href="/">
-          <Image src="/logo3.png" alt="logo" width={100} height={100} />
+        <Image
+  src="/logo3.png"
+  alt="logo"
+  width={100}
+  height={100}
+  style={{ width: "auto", height: "auto" }} // Это поможет сохранить пропорции
+/>
+
         </Link>
 
         <ul className="md:flex gap-8 hidden">

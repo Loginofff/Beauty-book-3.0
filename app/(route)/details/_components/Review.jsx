@@ -46,7 +46,8 @@ function MasterReviews({ master }) {
   const fetchUser = async (clientId) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_PRODUCTION_SERVER}/api/users/${clientId}`
+        // `${process.env.NEXT_PUBLIC_PRODUCTION_SERVER}/api/users/${clientId}`
+        `http://localhost:8080/api/users/${clientId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch user data");

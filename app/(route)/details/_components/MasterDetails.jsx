@@ -18,7 +18,8 @@ function MasterDetails({ master }) {
     async function fetchProcedures() {
       const promises = master.procedureIds.map((id) =>
         fetch(
-          process.env.NEXT_PUBLIC_PRODUCTION_SERVER + `/api/procedures/${id}`
+          // process.env.NEXT_PUBLIC_PRODUCTION_SERVER + `/api/procedures/${id}`
+          `http://localhost:8080/api/procedures/${id}`
         ).then((response) => response.json())
       );
       const results = await Promise.all(promises);

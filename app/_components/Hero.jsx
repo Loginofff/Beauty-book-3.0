@@ -38,8 +38,13 @@ function Hero() {
             </p>
 
             <Link href={"/explorePage"}>
-              <Button  className="mt-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300"
-            style={{ backgroundColor: "#006400", color: '#ffffff'}}>Jetzt Erkunden</Button></Link>
+              <Button
+                className="mt-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300"
+                style={{ backgroundColor: "#006400", color: "#ffffff" }}
+              >
+                Jetzt Erkunden
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

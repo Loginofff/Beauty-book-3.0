@@ -71,9 +71,9 @@ export default function Contact() {
       <form className="container" onSubmit={handleSubmit}
       style={{ backgroundColor: " transparent" }}
       >
-        <h1 className="text-green-700 text-3xl font-extrabold sm:text-5xl">
+        <h1 className="text-green-600 text-xl font-extrabold sm:text-5xl">
           Kontaktieren Sie uns
-          <strong className="block font-extrabold text-rose-700"> bei Fragen. </strong>
+          <strong className="block font-extrabold text-green-900"> bei Fragen. </strong>
         </h1>
         <div className="email block text-green-700">
           <label htmlFor="frm-email">Email</label>

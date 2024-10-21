@@ -116,7 +116,8 @@ const BookAppointment = ({ masterId, selectedProcedureId }) => {
       console.log("Request being sent:", requestOptions);
 
       const res = await fetch(
-        process.env.NEXT_PUBLIC_PRODUCTION_SERVER + "/api/bookings",
+        // process.env.NEXT_PUBLIC_PRODUCTION_SERVER + "/api/bookings",
+        "http://localhost:8080/api/bookings",
         requestOptions
       );
       const data = await res.json();

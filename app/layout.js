@@ -3,7 +3,6 @@ import "./globals.css";
 import App from "./App";
 import { ThemeProvider } from "next-themes";
 
-
 const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata = {
@@ -14,17 +13,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      
       <body className={outfit.className}>
-      <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <App>{children}</App>
-          </ThemeProvider>
-        
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light" // Или установите начальную тему
+          enableSystem={true}
+          disableTransitionOnChange={true}
+        >
+          <App>{children}</App>
+        </ThemeProvider>
       </body>
     </html>
   );
