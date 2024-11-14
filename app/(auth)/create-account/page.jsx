@@ -17,46 +17,56 @@ function CreateAccount() {
   const router = useRouter();
   const { setUser } = useContext(AuthContext);
 
-  const onCreateAccount = async () => {
-    try {
-      const userData = {
-        firstName,
-        lastName,
-        email,
-        role,
-        hashPassword,
-      };
+  // Функция для локальной валидации пароля
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])(?=\S+$).{8,}$/;
+    return regex.test(password);
+  };
 
-      const res = await fetch(
-        // process.env.NEXT_PUBLIC_PRODUCTION_SERVER + "/api/users/register",
-       " http://localhost:8080/api/users/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "*/*",
-          },
-          body: JSON.stringify(userData),
-        }
-        
-      );
-      console.log(userData);
+  // Обработчик отправки данных для создания аккаунта
+  const onCreateAccount = async () => {
+    if (!validatePassword(hashPassword)) {
+      toast("Пароль должен содержать букву, цифру, специальный символ и быть не менее 8 символов.");
+      return;
+    }
+
+    const userData = {
+      firstName,
+      lastName,
+      email,
+      hashPassword,
+      role,
+    };
+
+    try {
+      const res = await fetch("http://localhost:8080/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
       if (!res.ok) {
-        throw new Error("Failed to create account");
+        const errorData = await res.json();
+        console.error("Ошибка ответа сервера:", errorData);
+        throw new Error("Erstellung des Kontos fehlgeschlagen.");
       }
 
       const data = await res.json();
-      console.log(data);
-      setUser("user");
+      console.log("Ответ сервера:", data);
+      setUser(data);
       sessionStorage.setItem("user", JSON.stringify(data));
-      toast("Account created successfully");
+      toast("Konto erfolgreich erstellt");
       router.push("/");
     } catch (error) {
-      console.error("Error creating account:", error);
+      console.error("Fehler bei der Kontoerstellung:", error);
       toast("Error while creating account");
     }
   };
 
+  // Перенаправление на главную страницу, если пользователь уже вошел
   useEffect(() => {
     const user = sessionStorage.getItem("user");
     if (user) {
@@ -65,7 +75,7 @@ function CreateAccount() {
   }, []);
 
   return (
-    <div className="flex items-baseline justify-center my-20 ">
+    <div className="flex items-baseline justify-center my-20">
       <div className="flex flex-col items-center justify-center p-10 bg-blur-sm">
         <h2 className="font-bold text-3xl">Ein Konto erstellen</h2>
         <h2 className="text-gray-500">
@@ -74,7 +84,7 @@ function CreateAccount() {
 
         <div className="w-full flex flex-col gap-5 mt-7">
           <Input
-          style={{ color: "black", backgroundColor: "white" }}
+            style={{ color: "black", backgroundColor: "white" }}
             placeholder="First Name"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -82,7 +92,7 @@ function CreateAccount() {
             title="Please enter only letters for the first name"
           />
           <Input
-          style={{ color: "black", backgroundColor: "white" }}
+            style={{ color: "black", backgroundColor: "white" }}
             placeholder="Last Name"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -90,7 +100,7 @@ function CreateAccount() {
             title="Please enter only letters for the last name"
           />
           <Input
-          style={{ color: "black", backgroundColor: "white" }}
+            style={{ color: "black", backgroundColor: "white" }}
             placeholder="name@example.com"
             type="email"
             value={email}
@@ -98,7 +108,7 @@ function CreateAccount() {
             required
           />
           <Input
-          style={{ color: "black", backgroundColor: "white" }}
+            style={{ color: "black", backgroundColor: "white" }}
             type="password"
             required
             placeholder="Password"
@@ -107,10 +117,9 @@ function CreateAccount() {
             title="Password must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters"
           />
 
-          <div className=" flex  gap-4 px-5">
+          <div className="flex gap-4 px-5">
             <label>
               <input
-              
                 type="radio"
                 value="CLIENT"
                 checked={role === "CLIENT"}
@@ -120,7 +129,6 @@ function CreateAccount() {
             </label>
             <label>
               <input
-              style={{ color: "black", backgroundColor: "white" }}
                 type="radio"
                 value="MASTER"
                 checked={role === "MASTER"}
@@ -131,7 +139,7 @@ function CreateAccount() {
           </div>
 
           <Button
-            className=" inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300"
             style={{ backgroundColor: "#006400", color: "#ffffff" }}
             onClick={onCreateAccount}
             disabled={!firstName || !lastName || !email || !hashPassword}
@@ -151,4 +159,3 @@ function CreateAccount() {
 }
 
 export default CreateAccount;
-
