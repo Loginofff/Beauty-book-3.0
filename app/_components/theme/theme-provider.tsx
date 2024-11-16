@@ -1,4 +1,4 @@
-// ThemeProvider.js
+"use client";
 
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { useEffect, useState } from "react";
@@ -10,14 +10,19 @@ export function ThemeProvider({ children }) {
     setMounted(true);
   }, []);
 
+  if (!mounted) {
+    // Предотвращение рендера до монтирования
+    return <div style={{ visibility: "hidden" }}>{children}</div>;
+  }
+
   return (
     <NextThemeProvider
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="light"
       enableSystem
       disableTransitionOnChange
     >
-      {mounted && children}
+      {children}
     </NextThemeProvider>
   );
 }

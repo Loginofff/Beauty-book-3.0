@@ -1,7 +1,7 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import App from "./App";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "./_components/theme/theme-provider";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -14,12 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={outfit.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light" // Или установите начальную тему
-          enableSystem={true}
-          disableTransitionOnChange={true}
-        >
+        <ThemeProvider>
           <App>{children}</App>
         </ThemeProvider>
       </body>

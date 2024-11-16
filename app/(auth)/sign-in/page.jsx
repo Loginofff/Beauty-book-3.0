@@ -11,6 +11,7 @@ import { AuthContext } from "../../context/AuthContext";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State для показа/скрытия пароля
   const router = useRouter();
   const { setUser } = useContext(AuthContext);
 
@@ -21,6 +22,10 @@ function SignIn() {
 
   const validatePassword = (password) => {
     return password.length >= 8;
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Переключение видимости пароля
   };
 
   const onLoginAccount = async () => {
@@ -39,7 +44,7 @@ function SignIn() {
         email,
         hashPassword: password,
       };
-// process.env.NEXT_PUBLIC_PRODUCTION_SERVER + "/api/auth/login",
+
       const res = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
         headers: {
@@ -94,14 +99,24 @@ function SignIn() {
             style={{ color: "black", backgroundColor: "white" }}
             required
           />
-          <Input
-            type="password"
-            placeholder="Passwort"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{ color: "black", backgroundColor: "white" }}
-            title="Das Passwort muss mindestens 8 Zeichen enthalten"
-          />
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder="Passwort"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{ color: "black", backgroundColor: "white", paddingRight: "2.5rem" }}
+              title="Das Passwort muss mindestens 8 Zeichen enthalten"
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-black"
+              aria-label={showPassword ? "Passwort verstecken" : "Passwort zeigen"}
+            >
+              {showPassword ? "👁️" : "🔒"}
+            </button>
+          </div>
           <Button
             className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300"
             style={{ backgroundColor: "#006400", color: "#ffffff" }}
