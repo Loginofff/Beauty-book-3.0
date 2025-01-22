@@ -14,6 +14,7 @@ function CreateAccount() {
   const [email, setEmail] = useState("");
   const [hashPassword, setHashPassword] = useState("");
   const [role, setRole] = useState("CLIENT");
+  const [showPassword, setShowPassword] = useState(false); // Состояние для видимости пароля
   const router = useRouter();
   const { setUser } = useContext(AuthContext);
 
@@ -74,6 +75,11 @@ function CreateAccount() {
     }
   }, []);
 
+  // Функция для переключения видимости пароля
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="flex items-baseline justify-center my-20">
       <div className="flex flex-col items-center justify-center p-10 bg-blur-sm">
@@ -107,15 +113,25 @@ function CreateAccount() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <Input
-            style={{ color: "black", backgroundColor: "white" }}
-            type="password"
-            required
-            placeholder="Password"
-            value={hashPassword}
-            onChange={(e) => setHashPassword(e.target.value)}
-            title="Password must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters"
-          />
+          <div className="relative">
+            <Input
+              style={{ color: "black", backgroundColor: "white" }}
+              type={showPassword ? "text" : "password"}
+              required
+              placeholder="Password"
+              value={hashPassword}
+              onChange={(e) => setHashPassword(e.target.value)}
+              title="Password must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters"
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-black"
+              aria-label={showPassword ? "Passwort verstecken" : "Passwort zeigen"}
+            >
+              {showPassword ? "👁️" : "🔒"}
+            </button>
+          </div>
 
           <div className="flex gap-4 px-5">
             <label>

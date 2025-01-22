@@ -9,46 +9,63 @@ function Search({ params }) {
   const [masters, setMasters] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const categories = [
-    { id: 1, name: "FRISEUR" },
-    { id: 2, name: "NÄGEL" },
-    { id: 3, name: "HAARENTFERNUNG" },
-    { id: 4, name: "KOSMETIK" },
-    { id: 5, name: "MASSAGE" },
-    { id: 6, name: "MAKEUP" },
-  ];
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    if (params.cname) {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/categories");
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories.");
+        }
+        const data = await response.json();
+        console.log("Fetched categories:", data);
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    if (params.cname && categories.length > 0) {
       const decodedCategoryName = decodeURIComponent(params.cname);
       const category = categories.find(
-        (cat) => cat.name === decodedCategoryName
+        (cat) => cat.name.toLowerCase() === decodedCategoryName.toLowerCase()
       );
+
       if (category) {
         getMasters(category.id);
+      } else {
+        setError("Category not found.");
       }
     }
-  }, [params.cname]);
+  }, [params.cname, categories]);
 
   const getMasters = async (categoryId) => {
     setLoading(true);
     setError("");
     try {
       const response = await fetch(
-        // process.env.NEXT_PUBLIC_PRODUCTION_SERVER +
-        //   `/api/users/by-category/${categoryId}`
         `http://localhost:8080/api/users/by-category/${categoryId}`
       );
+
       if (!response.ok) {
-        throw new Error("Failed to fetch");
+        throw new Error("Failed to fetch data from server.");
       }
+
       const data = await response.json();
-      console.log("Data received from server:", data);
-      setMasters(data);
+
+      if (data && data.length > 0) {
+        setMasters(data);
+      } else {
+        setMasters([]);
+        setError("No masters found in this category.");
+      }
     } catch (error) {
-      console.error("Error fetching masters:", error);
-      setError("Failed to fetch masters");
+      setError("Failed to fetch masters.");
     }
     setLoading(false);
   };
@@ -63,55 +80,38 @@ function Search({ params }) {
       <Link href={`/details/${master.id}`}>
         <div
           className="border-[1px] rounded-lg p-3 cursor-pointer
-         hover:border-green-700 hover:shadow-sm transition-all 
-         ease-in-out mt-5 "
+          hover:border-green-700 hover:shadow-sm transition-all 
+          ease-in-out mt-5 flex flex-col sm:flex-row items-center"
         >
-          <div className="flex items-center ">
-            <img
-              src={master.profileImageUrl}
-              alt="searchPhoto"
-              style={{
-                width: "90px",
-                height: "90px",
-                borderRadius: "50%",
-                objectFit: "cover",
-                marginRight: "10px",
-              }}
-            />
-            <div className="ml-2">
-              <p
-                className="text-[15px] text-center bg-green-900 p-2 rounded-full mt-1 text-white"
-                style={{ width: "200px" }}
-              >
-                {categoryNames.join(", ")}
-              </p>
-
-              <h2 className="font-bold m-2">
-                {master.firstName} {master.lastName}
-              </h2>
-              <h2 className="text-gray-500 text-sm mt-2">
-                Address: {master.address}
-              </h2>
-              <MasterRating master={master} />
-            </div>
-
-            <div className="ml-auto flex items-center">
-              <button
-                className="p-2 px-3 border-[1px] border-green-700
-               text-green-700 rounded-full text-center cursor-pointer
-                hover:bg-green-700 hover:text-white"
-              >
-                Booking Jetzt
-              </button>
-            </div>
+          <img
+            src={master.profileImageUrl}
+            alt="searchPhoto"
+            className="w-[100px] h-[100px] rounded-full object-cover sm:mr-5"
+          />
+          <div className="flex-1 text-center sm:text-left">
+            <p
+              className="text-sm bg-green-900 text-white p-2 rounded-full mt-1 inline-block"
+            >
+              {categoryNames.join(", ")}
+            </p>
+            <h2 className="font-bold mt-2">{master.firstName} {master.lastName}</h2>
+            <p className="text-gray-500 text-sm mt-1">Address: {master.address}</p>
+            <MasterRating master={master} />
           </div>
+          <button
+            className="p-2 px-3 border-[1px] border-green-700
+            text-green-700 rounded-full text-center cursor-pointer
+            hover:bg-green-700 hover:text-white mt-2 sm:mt-0"
+          >
+            Booking Jetzt
+          </button>
         </div>
       </Link>
     );
   };
 
   return (
-    <div>
+    <div className="p-5">
       {loading ? (
         <p>Loading...</p>
       ) : error ? (

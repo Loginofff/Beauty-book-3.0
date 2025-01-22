@@ -9,24 +9,28 @@ function CategoryList() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    const getCategoryList = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/api/categories", {
+          headers: { accept: "*/*" },
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch categories.");
+        }
+
+        const arr = await res.json();
+
+        console.log("Categories fetched from server:", arr);
+
+        setCategoryList(arr);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
     getCategoryList();
   }, []);
-
-  const getCategoryList = async () => {
-    try {
-      const res = await fetch(
-        // process.env.NEXT_PUBLIC_PRODUCTION_SERVER + "/api/categories",
-        "http://localhost:8080/api/categories",
-        {
-          headers: { accept: "*/*" },
-        }
-      );
-      const arr = await res.json();
-      setCategoryList(arr);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
 
   const handleCategoryClick = (name) => {
     setSelectedCategory(name === selectedCategory ? null : name);
@@ -37,39 +41,40 @@ function CategoryList() {
   );
 
   return (
-    <div className="ml-2 h-screen mt-10 flex flex-col w-[170px]">
+    <div className="ml-2 mt-5 flex flex-col md:h-screen md:w-[170px]">
+      {/* Поле поиска */}
       <input
-        className="mb-2 px-3 py-2 border rounded-lg w-full "
+        className="mb-2 px-3 py-2 border rounded-lg w-full"
         type="text"
-        placeholder="Category finden..."
+        placeholder="Категория suchen..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <div>
+      <div
+        className="flex md:flex-col gap-2 md:gap-0 overflow-x-auto md:overflow-hidden"
+      >
         {filteredCategories.length === 0 ? (
           <div>No results found.</div>
         ) : (
-          <div>
-            {filteredCategories.map((item, index) => (
-              <div
-                key={index}
-                className="cursor-pointer p-2 mb-2 rounded-md"
-                onClick={() => handleCategoryClick(item.name)}
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  textDecoration: "none",
-                  color: selectedCategory === item.name ? "white" : "green",
-                  backgroundColor:
-                    selectedCategory === item.name ? "green" : "transparent",
-                }}
-              >
-                <Link href={"/search/" + item.name}>
-                  <div>{item.name}</div>
-                </Link>
-              </div>
-            ))}
-          </div>
+          filteredCategories.map((item, index) => (
+            <div
+              key={index}
+              className="cursor-pointer p-2 mb-2 rounded-md whitespace-nowrap md:whitespace-normal"
+              onClick={() => handleCategoryClick(item.name)}
+              style={{
+                fontSize: "16px",
+                fontWeight: "bold",
+                textDecoration: "none",
+                color: selectedCategory === item.name ? "white" : "green",
+                backgroundColor:
+                  selectedCategory === item.name ? "green" : "transparent",
+              }}
+            >
+              <Link href={`/search/${encodeURIComponent(item.name)}`}>
+                <div>{item.name}</div>
+              </Link>
+            </div>
+          ))
         )}
       </div>
     </div>
@@ -77,4 +82,3 @@ function CategoryList() {
 }
 
 export default CategoryList;
-

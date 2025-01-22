@@ -1,84 +1,146 @@
-import React, { useState, useEffect } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useUser } from "./UserContext";
 
-const ClientProfile = ({ user }) => {
-  const [editing, setEditing] = useState(false);
-  const [newName, setNewName] = useState(user ? user.name : "");
-  const [newLastName, setNewLastName] = useState(user ? user.lastName : "");
-  const [newEmail, setNewEmail] = useState(user ? user.email : "");
-  const [profileImage, setProfileImage] = useState(null);
-  const [userId, setUserId] = useState(null);
+const ClientProfile = () => {
+  const { user } = useUser();
+  const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    if (user && user.userId) {
-      setUserId(user.userId);
+  const fetchUserData = async () => {
+    if (!user?.accessToken || !user?.user_id) {
+      toast.error("Benutzerdaten konnten nicht geladen werden.");
+      return;
     }
-  }, [user]);
 
-  const handleEditClick = () => {
-    setEditing(true);
-  };
-
-  const handleSaveClick = async () => {
     try {
-      const formData = new FormData();
-      formData.append("name", newName);
-      formData.append("lastName", newLastName);
-      formData.append("email", newEmail);
-      if (profileImage) {
-        formData.append("profileImage", profileImage);
+      const response = await fetch(`http://localhost:8080/api/users/${user.user_id}`, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        toast.error(`Serverfehler: ${response.statusText}`);
+        return;
       }
 
+      const data = await response.json();
+      setUserData(data);
+    } catch (error) {
+      console.error("Fehler beim Laden der Benutzerdaten:", error);
+      toast.error("Benutzerdaten konnten nicht geladen werden.");
+    }
+  };
+
+  const handleImageUpload = async (file) => {
+    if (!file) {
+      toast.error("Bitte wählen Sie eine Datei zum Hochladen aus!");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
       const response = await fetch(
-        // process.env.NEXT_PUBLIC_PRODUCTION_SERVER +
-        //   `/api/metadata/${user.user_id}/profile`,
-          `http://localhost:8080/api/metadata/${user.user_id}/profile`,
+        `http://localhost:8080/api/metadata/${user.user_id}/profileImage`,
         {
-          method: "PUT",
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
           body: formData,
         }
       );
-      console.log(formData);
+
       if (!response.ok) {
-        throw new Error("Failed to save profile changes");
+        toast.error("Fehler beim Hochladen des Fotos.");
+        return;
       }
 
-      console.log("Профиль успешно обновлен");
-      toast("Профиль успешно обновлен");
-      setEditing(false);
+      const responseData = await response.json();
+      setUserData((prev) => ({
+        ...prev,
+        profileImageUrl: responseData.profileImageUrl,
+      }));
+
+      toast.success("Foto erfolgreich hochgeladen!");
     } catch (error) {
-      console.error("Ошибка при сохранении профиля:", error.message);
-      toast("Ошибка при сохранении профиля");
+      console.error("Fehler beim Hochladen des Fotos:", error);
+      toast.error("Fehler beim Hochladen des Fotos.");
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      handleImageUpload(file); // Автоматически загружаем фото
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
   return (
-    <div className="flex justify-center">
-      <div
-        className="bg-blur-sm p-5 m-2 rounded-lg "
-        style={{ width: "1100px" }}
-      >
-        <h2 className="text-green-900 text-2xl font-semibold mb-5">
-          Dein Profil
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="bg-white shadow-2xl p-10 rounded-lg text-left max-w-4xl w-full">
+        <h2 className="text-green-900 text-3xl font-extrabold mb-8 text-left">
+          Kundenprofil
         </h2>
 
-        <>
-          <p className="text-green-900 mb-3">
-            <span className="font-bold text-xl">Name:</span> {user && user.name}
-          </p>
-          <p className="text-green-900 mb-3">
-            <span className="font-bold text-xl">Nachname:</span>{" "}
-            {user && user.lastName}
-          </p>
-          <p className="text-green-900 mb-3">
-            <span className="font-bold text-xl">E-Mail:</span>{" "}
-            {user && user.email}
-          </p>
-        </>
+        <div className="flex items-center mb-10">
+          <div className="w-48 h-48 mr-10">
+            {userData?.profileImageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={userData.profileImageUrl}
+                alt="Profilfoto"
+                className="w-full h-full rounded-full object-cover shadow-md"
+              />
+            ) : (
+              <div className="w-full h-full rounded-full bg-gray-300 flex items-center justify-center text-gray-500 text-xl">
+                Kein Foto
+              </div>
+            )}
+          </div>
+          <div className="space-y-4">
+            <label className="block bg-blue-600 text-white py-2 px-4 rounded cursor-pointer hover:bg-blue-700 transition text-center">
+              Foto auswählen und hochladen
+              <input
+                type="file"
+                onChange={handleFileChange}
+                accept="image/*"
+                className="hidden"
+              />
+            </label>
+          </div>
+        </div>
+
+        <div className="bg-gray-50 p-6 rounded-lg shadow-inner">
+          <h3 className="text-green-900 font-bold text-2xl mb-4">Informationen</h3>
+          <div className="space-y-4 text-gray-700 text-lg">
+            <p>
+              <span className="font-bold text-xl text-gray-900">Vorname:</span>{" "}
+              {userData?.firstName || "Nicht angegeben"}
+            </p>
+            <p>
+              <span className="font-bold text-xl text-gray-900">Nachname:</span>{" "}
+              {userData?.lastName || "Nicht angegeben"}
+            </p>
+            <p>
+              <span className="font-bold text-xl text-gray-900">E-Mail:</span>{" "}
+              {userData?.email || "Nicht angegeben"}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default ClientProfile;
-

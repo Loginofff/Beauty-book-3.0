@@ -11,7 +11,7 @@ import { AuthContext } from "../../context/AuthContext";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State для показа/скрытия пароля
+  const [showPassword, setShowPassword] = useState(false); // Состояние для видимости пароля
   const router = useRouter();
   const { setUser } = useContext(AuthContext);
 
@@ -25,7 +25,7 @@ function SignIn() {
   };
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword); // Переключение видимости пароля
+    setShowPassword(!showPassword);
   };
 
   const onLoginAccount = async () => {
@@ -96,7 +96,7 @@ function SignIn() {
             placeholder="name@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{ color: "black", backgroundColor: "white" }}
+            className="text-black bg-white"
             required
           />
           <div className="relative">
@@ -105,7 +105,7 @@ function SignIn() {
               placeholder="Passwort"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              style={{ color: "black", backgroundColor: "white", paddingRight: "2.5rem" }}
+              className="text-black bg-white pr-12"
               title="Das Passwort muss mindestens 8 Zeichen enthalten"
             />
             <button
@@ -121,7 +121,7 @@ function SignIn() {
             className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300"
             style={{ backgroundColor: "#006400", color: "#ffffff" }}
             onClick={onLoginAccount}
-            disabled={!email || !password}
+            disabled={!email || !password || !validateEmail(email) || !validatePassword(password)}
           >
             Anmeldung
           </Button>

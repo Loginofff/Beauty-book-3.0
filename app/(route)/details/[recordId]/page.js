@@ -29,10 +29,10 @@ function Details({ params }) {
   };
 
   return (
-    <div className="p-5 md:px-20">
+    <div className="p-5">
       <h2 className="font-bold text-[22px]">Information</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-5">
+      <div className="grid grid-cols-1 md:grid-cols-3">
         {/* Master details */}
         <div className="col-span-3">
           <MasterDetails master={master} />

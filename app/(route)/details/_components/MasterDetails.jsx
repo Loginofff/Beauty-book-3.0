@@ -16,31 +16,26 @@ function MasterDetails({ master }) {
 
   useEffect(() => {
     async function fetchProcedures() {
-      const promises = master.procedureIds.map((id) =>
-        fetch(
-          // process.env.NEXT_PUBLIC_PRODUCTION_SERVER + `/api/procedures/${id}`
-          `http://localhost:8080/api/procedures/${id}`
-        ).then((response) => response.json())
+      const promises = master?.procedureIds?.map((id) =>
+        fetch(`http://localhost:8080/api/procedures/${id}`).then((res) => res.json())
       );
-      const results = await Promise.all(promises);
+      const results = await Promise.all(promises || []);
       setProcedures(results);
     }
 
-    if (master && master.procedureIds) {
-      fetchProcedures();
-    }
+    if (master?.procedureIds) fetchProcedures();
 
-    if (master && master.portfolioImageUrls) {
-      const images = master.portfolioImageUrls.map((url) => ({
-        original: url,
-        thumbnail: url,
+    if (master?.portfolioImageUrls) {
+      const galleryImages = master.portfolioImageUrls.map((img) => ({
+        original: img.url,
+        thumbnail: img.url,
       }));
-      setImages(images);
+      setImages(galleryImages);
     }
   }, [master]);
 
   const handleProcedureSelection = (procedureId) => {
-    setSelectedProcedureId(procedureId);
+    setSelectedProcedureId((prev) => (prev === procedureId ? null : procedureId));
   };
 
   const categories = [
@@ -52,13 +47,10 @@ function MasterDetails({ master }) {
     { id: 6, name: "MAKEUP" },
   ];
 
-  function getCategoryNames(categoryIds, categories) {
+  function getCategoryNames(categoryIds) {
     return categoryIds
-      .map((id) => {
-        const category = categories.find((category) => category.id === id);
-        return category ? category.name : null;
-      })
-      .filter((name) => name != null)
+      .map((id) => categories.find((category) => category.id === id)?.name || null)
+      .filter(Boolean)
       .join(", ");
   }
 
@@ -66,104 +58,98 @@ function MasterDetails({ master }) {
     <>
       {master && (
         <div className="grid grid-cols-1 md:grid-cols-3 border-[1px] p-5 mt-5 rounded-lg">
-          <div className="md:col-span-1">
+          {/* Профильное изображение */}
+          <div className="md:col-span-1 flex justify-center items-center">
             <img
               src={master.profileImageUrl}
-              width={400}
-              height={500}
-              className="rounded-lg h-[500px] w-[400px] object-cover"
+              alt="Profil"
+              className="rounded-lg h-[300px] md:h-[500px] w-[300px] md:w-[400px] object-cover"
             />
           </div>
-          <div className="md:col-span-1 md:col-start-2 mt-5 flex flex-col items-center gap-2">
-            {master && master.categoryIds && (
-              <h2 className="mt-2 text-[15px] bg-green-700 p-3 rounded-full px-2 text-white">
-                {getCategoryNames(master.categoryIds, categories)}
+
+          {/* Основная информация */}
+          <div className="md:col-span-1 md:col-start-2 mt-5 flex flex-col items-center gap-3">
+            {master.categoryIds && (
+              <h2 className="text-[15px] bg-green-700 text-white px-3 py-1 rounded-full">
+                {getCategoryNames(master.categoryIds)}
               </h2>
             )}
-            <h2 className="font-bold">
+            <h2 className="font-bold text-xl">
               {master.firstName} {master.lastName}
             </h2>
-            <h2 className="text-green-800 text-md flex items-center">
+            <p className="text-green-800 text-md flex items-center gap-2">
               <MdEmail className="mr-1" />
               {master.email}
-            </h2>
-            <h2 className="text-md flex gap-2 text-green-800 items-center">
-              <MapPin />
+            </p>
+            <p className="text-green-800 text-md flex items-center gap-2">
+              <MapPin className="mr-1" />
               {master.address}
-            </h2>
-            <h2 className="text-md flex gap-2 text-green-800 items-center">
-              <FaPhone />
+            </p>
+            <p className="text-green-800 text-md flex items-center gap-2">
+              <FaPhone className="mr-1" />
               {master.phoneNumber}
-            </h2>
+            </p>
             <div>{master && <MasterRating master={master} />}</div>
-            <div className="font-bold text-black border p-2 mt-2 rounded-lg w-full mr-5">
+            <p className="font-bold text-black border p-3 rounded-lg mt-2 w-full">
               {master.description}
-            </div>
+            </p>
           </div>
 
-          <div className="md:col-span-1 mt-5  md:mt-0 md:col-start-3 flex flex-col m-5">
-            <h2 className="font-bold text-center">
-              Wählen Sie eine Behandlung aus
-            </h2>
-            <div className="mt-5">
+          {/* Процедуры */}
+          <div className="md:col-span-1 mt-5 md:mt-0 md:col-start-3 flex flex-col">
+            <h2 className="font-bold text-center">Wählen Sie eine Behandlung aus</h2>
+            <div className="mt-5 flex flex-col gap-3">
               {procedures.map((procedure) => (
-                <div
+                <button
                   key={procedure.id}
-                  className={`bg-green-700 text-white p-2 mt-2 rounded-lg ml-10 ${
-                    selectedProcedureId === procedure.id ? "bg-blue-500" : ""
-                  }`}
+                  className={`px-3 py-2 rounded-lg text-white text-center ${
+                    selectedProcedureId === procedure.id ? "bg-blue-500" : "bg-green-700"
+                  } hover:bg-green-600`}
+                  onClick={() => handleProcedureSelection(procedure.id)}
                 >
-                  <button
-                    className={`hover:bg-green-600 hover:text-white cursor-pointer rounded-lg p-1 ${
-                      selectedProcedureId === procedure.id
-                        ? "bg-green-600 text-white"
-                        : ""
-                    }`}
-                    onClick={() => handleProcedureSelection(procedure.id)}
-                  >
-                    {procedure.name} - {procedure.price} EUR
-                  </button>
-                </div>
+                  {procedure.name} - {procedure.price} EUR
+                </button>
               ))}
-              <div className="flex justify-center mt-2">
+            </div>
+            {selectedProcedureId && (
+              <div className="flex justify-center mt-3">
                 <BookAppointment
                   masterId={master.id}
                   selectedProcedureId={selectedProcedureId}
                 />
               </div>
-            </div>
+            )}
           </div>
         </div>
       )}
 
+      {/* Галерея и отзывы */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-        {/* Portfolio Images */}
+        {/* Галерея */}
         <div className="w-full border rounded-lg">
           {images.length > 0 && (
-            <div className="p-4 h-full">
-              <div className="max-h-[400px]">
-                <ImageGallery
-                  width={200}
-                  height={300}
-                  style={{
-                    minHeight: "200px",
-                    maxHeight: "800px",
-                    overflowY: "auto",
-                  }}
-                  items={images}
-                />
-              </div>
+            <div className="p-4">
+              <h2 className="text-center font-bold mb-3">Portfolio</h2>
+              <ImageGallery
+                items={images}
+                showFullscreenButton={true}
+                showPlayButton={false}
+                thumbnailPosition="bottom"
+              />
             </div>
           )}
         </div>
-        {/* Master Reviews */}
-        <div
-          className="w-full border rounded-lg"
-          style={{ minHeight: "200px", maxHeight: "810px", overflowY: "auto" }}
-        >
-          <div className="p-4 h-full">
-            <MasterReviews master={master} limit={showAllReviews ? null : 4} />
-          </div>
+
+        {/* Отзывы */}
+        <div className="w-full border rounded-lg overflow-y-auto max-h-[400px] p-4">
+          <h2 className="font-bold mb-3 text-center">Bewertungen</h2>
+          <MasterReviews master={master} limit={showAllReviews ? null : 4} />
+          <button
+            className="text-blue-600 hover:underline mt-3 text-center block"
+            onClick={() => setShowAllReviews(!showAllReviews)}
+          >
+            {showAllReviews ? "Weniger anzeigen" : "Alle anzeigen"}
+          </button>
         </div>
       </div>
     </>
@@ -171,4 +157,3 @@ function MasterDetails({ master }) {
 }
 
 export default MasterDetails;
-
