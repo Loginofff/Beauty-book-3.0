@@ -1,10 +1,9 @@
 "use client";
 
-import React from 'react'; // Removed { useState }
+import React from 'react';
 import { toast } from "sonner";
 
 export default function Contact() {
-  // Moved useState hooks inside the component function
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
@@ -25,7 +24,6 @@ export default function Contact() {
 
     try {
       const response = await fetch(
-        // process.env.NEXT_PUBLIC_PRODUCTION_SERVER + "/api/users/message-admin", 
         "http://localhost:8080/api/users/message-admin",
         {
         method: 'POST',
@@ -42,8 +40,8 @@ export default function Contact() {
         throw new Error('Network response was not ok');
       }
 
-      const result = await response.text(); // Read response as text
-      const parsedResult = result ? JSON.parse(result) : null; // Parse only if response is not empty
+      const result = await response.text();
+      const parsedResult = result ? JSON.parse(result) : null;
       
       if (parsedResult) {
         console.log('Полученный результат:', parsedResult);
@@ -53,7 +51,6 @@ export default function Contact() {
         toast("Nachricht gesendet");
       }
       
-      // Clear the form fields
       setEmail('');
       setPhone('');
       setFirstName('');
@@ -135,7 +132,9 @@ export default function Contact() {
           />
         </div>
         <div className="button block white ">
-          <button type="submit" className='bg-green-700'>Senden</button>
+          <button type="submit" className="bg-green-700 text-white font-bold py-2 px-4 rounded-lg cursor-pointer hover:bg-green-800 transition">
+            Senden
+          </button>
         </div>
       </form>
     </div>

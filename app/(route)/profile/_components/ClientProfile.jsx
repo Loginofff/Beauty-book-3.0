@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useUser } from "./UserContext";
+import Image from "next/image";
 
 const ClientProfile = () => {
   const { user } = useUser();
@@ -96,12 +97,15 @@ const ClientProfile = () => {
         <div className="flex items-center mb-10">
           <div className="w-48 h-48 mr-10">
             {userData?.profileImageUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={userData.profileImageUrl}
-                alt="Profilfoto"
-                className="w-full h-full rounded-full object-cover shadow-md"
-              />
+              <div className="relative w-full h-full">
+                <Image
+                  src={userData.profileImageUrl}
+                  alt="Profilfoto"
+                  layout="fill"
+                  className="rounded-full object-cover shadow-md"
+                  priority
+                />
+              </div>
             ) : (
               <div className="w-full h-full rounded-full bg-gray-300 flex items-center justify-center text-gray-500 text-xl">
                 Kein Foto

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import ClientProfile from "../profile/_components/ClientProfile";
-import MasterProfile from "../profile/_components/MasterProfile";
+import MasterProfile from "./_components/master/MasterProfile";
 import AdminProfile from "../profile/_components/AdminProfile";
 import { UserProvider, useUser } from "./_components/UserContext";
 
