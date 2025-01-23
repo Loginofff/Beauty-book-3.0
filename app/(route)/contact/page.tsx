@@ -134,7 +134,7 @@ export default function Contact() {
             onChange={(e) => setMessage(e.target.value)}
           />
         </div>
-        <div className="button block text-black ">
+        <div className="button block white ">
           <button type="submit" className='bg-green-700'>Senden</button>
         </div>
       </form>

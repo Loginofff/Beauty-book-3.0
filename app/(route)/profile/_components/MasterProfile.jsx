@@ -6,6 +6,7 @@ import Select from "react-select";
 import { useUser } from "./UserContext";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
+import Image from "next/image";
 
 // Компонент для отображения данных профиля
 const ProfileDetails = ({
@@ -17,53 +18,96 @@ const ProfileDetails = ({
   address,
   description,
 }) => (
-  <div>
-    <div className="flex justify-between">
-      <div>
-        <p className="text-green-900 mb-3">
-          <span className="font-bold text-xl">Name:</span> {userData?.firstName}
-        </p>
-        <p className="text-green-900 mb-3">
-          <span className="font-bold text-xl">Nachname:</span>{" "}
-          {userData?.lastName}
-        </p>
-        <p className="text-green-900 mb-3">
-          <span className="font-bold text-xl">E-Mail:</span> {userData?.email}
-        </p>
-        <p className="text-green-900 mb-3">
-          <span className="font-bold text-xl">Telefonnummer:</span>{" "}
-          {phoneNumber}
-        </p>
-        <p className="text-green-900 mb-3">
-          <span className="font-bold text-xl">Adresse:</span> {address}
-        </p>
+  <div
+    className="p-5 bg-white rounded-lg shadow-md"
+    style={{ backgroundColor: " transparent" }}
+  >
+    <div className="flex justify-between gap-5 flex-wrap items-center">
+      {/* Блок с текстовыми данными */}
+      <div className="flex flex-col gap-3 flex-grow">
+        {/* Имя */}
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-green-800 text-xl">Name:</span>
+          <div className="bg-green-50 border border-green-200 rounded-md p-2 text-green-900 flex-grow">
+            {userData?.firstName || "Nicht angegeben"}
+          </div>
+        </div>
+        {/* Фамилия */}
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-green-800 text-xl">Nachname:</span>
+          <div className="bg-green-50 border border-green-200 rounded-md p-2 text-green-900 flex-grow">
+            {userData?.lastName || "Nicht angegeben"}
+          </div>
+        </div>
+        {/* Email */}
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-green-800 text-xl">E-Mail:</span>
+          <div className="bg-green-50 border border-green-200 rounded-md p-2 text-green-900 flex-grow">
+            {userData?.email || "Nicht angegeben"}
+          </div>
+        </div>
+        {/* Телефон */}
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-green-800 text-xl">
+            Telefonnummer:
+          </span>
+          <div className="bg-green-50 border border-green-200 rounded-md p-2 text-green-900 flex-grow">
+            {phoneNumber || "Nicht angegeben"}
+          </div>
+        </div>
+        {/* Адрес */}
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-green-800 text-xl">Adresse:</span>
+          <div className="bg-green-50 border border-green-200 rounded-md p-2 text-green-900 flex-grow">
+            {address || "Nicht angegeben"}
+          </div>
+        </div>
       </div>
-      <div>
+
+      {/* Фото профиля */}
+      <div className="flex items-center justify-center">
         {profileImage ? (
-          <img
-            src={profileImage}
-            alt="profilePhoto"
-            className="w-48 h-48 rounded-full object-cover"
-          />
+          <div className="relative w-48 h-48">
+            <Image
+              src={profileImage}
+              alt="profilePhoto"
+              fill // Заменяем layout="fill"
+              sizes="(max-width: 768px) 100vw, 200px" // Добавляем sizes для оптимизации
+              className="rounded-full object-cover shadow-md"
+            />
+          </div>
         ) : (
-          <div className="w-48 h-48 rounded-full bg-gray-300 flex items-center justify-center text-gray-500 text-xl">
+          <div className="w-48 h-48 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
             Kein Foto
           </div>
         )}
       </div>
     </div>
 
-    <p className="text-green-900 mb-3">
-      <span className="font-bold text-xl">Beruf:</span>{" "}
-      {getCategoryNames(userData?.categoryIds || [])}
-    </p>
-    <p className="text-green-900 mb-3">
-      <span className="font-bold text-xl">Behandlungen:</span>{" "}
-      {getProcedureNames(userData?.procedureIds || [])}
-    </p>
-    <p className="text-green-900 mb-2">
-      <span className="font-bold text-xl">Beschreibung:</span> {description}
-    </p>
+    {/* Дополнительная информация */}
+    <div className="flex flex-wrap gap-5 mt-5">
+      {/* Beruf */}
+      <div className="flex items-center gap-2">
+        <span className="font-bold text-green-800 text-xl">Beruf:</span>
+        <div className="bg-green-50 border border-green-200 rounded-md p-2 text-green-900">
+          {getCategoryNames(userData?.categoryIds || []) || "Nicht angegeben"}
+        </div>
+      </div>
+      {/* Behandlungen */}
+      <div className="flex items-center gap-2">
+        <span className="font-bold text-green-800 text-xl">Behandlungen:</span>
+        <div className="bg-green-50 border border-green-200 rounded-md p-2 text-green-900">
+          {getProcedureNames(userData?.procedureIds || []) || "Nicht angegeben"}
+        </div>
+      </div>
+      {/* Beschreibung */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="font-bold text-green-800 text-xl">Beschreibung:</span>
+        <div className="bg-green-50 border border-green-200 rounded-md p-2 text-green-900 flex-grow">
+          {description || "Nicht angegeben"}
+        </div>
+      </div>
+    </div>
   </div>
 );
 
@@ -219,9 +263,8 @@ const MasterProfile = () => {
     }
   };
 
-
-   // Удаление фотографии из портфолио
-   const handlePortfolioDelete = async (imageId) => {
+  // Удаление фотографии из портфолио
+  const handlePortfolioDelete = async (imageId) => {
     try {
       const response = await fetch(
         `http://localhost:8080/api/metadata/${user.user_id}/portfolioImage/${imageId}`,
@@ -259,7 +302,6 @@ const MasterProfile = () => {
       handlePortfolioUpload(file);
     }
   };
-
 
   // Fetch categories
   useEffect(() => {
@@ -459,11 +501,14 @@ const MasterProfile = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="bg-white shadow-lg p-5 m-2 rounded-lg w-full max-w-4xl">
-        <h2 className="text-green-900 text-2xl font-semibold mb-5">
+      <div
+        className=" shadow-xl p-8 m-4 rounded-lg w-full max-w-5xl"
+        style={{ backgroundColor: " transparent" }}
+      >
+        <h2 className="text-green-600 text-lg font-extrabold sm:text-4xl mb-4">
           Master Profil
         </h2>
-  
+
         {!editing ? (
           <>
             <ProfileDetails
@@ -488,19 +533,18 @@ const MasterProfile = () => {
               address={address}
               description={description}
             />
-  
-            {/* Кнопка редактирования профиля */}
-            <button
-              onClick={() => setEditing(true)}
-              className="bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer hover:bg-blue-700 transition mt-5"
-            >
-              Profil bearbeiten
-            </button>
-  
-            {/* Контейнер для кнопок */}
-            <div className="mt-5 flex justify-between items-center">
-              {/* Кнопка загрузки фото в портфолио */}
-              <label className="bg-green-600 text-white font-bold py-2 px-4 rounded cursor-pointer hover:bg-green-700 transition text-center">
+
+            <div className="mt-5 flex justify-between items-center gap-5">
+              {/* Кнопка редактирования профиля (по центру) */}
+              <button
+                onClick={() => setEditing(true)}
+                className="bg-green-700 text-white font-bold py-2 px-4 rounded-lg cursor-pointer hover:bg-green-800 transition"
+              >
+                Profil bearbeiten
+              </button>
+
+              {/* Кнопка загрузки фото в портфолио (слева) */}
+              <label className="bg-green-700 text-white font-bold py-2 px-4 rounded-lg cursor-pointer hover:bg-green-800 transition">
                 Foto zum Portfolio hinzufügen
                 <input
                   type="file"
@@ -509,10 +553,10 @@ const MasterProfile = () => {
                   className="hidden"
                 />
               </label>
-  
-              {/* Кнопка загрузки фото профиля */}
-              <label className="bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer hover:bg-blue-700 transition text-center">
-                Foto auswählen und hochladen
+
+              {/* Кнопка загрузки фото профиля (справа) */}
+              <label className="bg-green-700 text-white font-bold py-2 px-4 rounded-lg cursor-pointer hover:bg-green-800 transition">
+                Profilfoto hochladen
                 <input
                   type="file"
                   onChange={handleFileChange}
@@ -521,30 +565,35 @@ const MasterProfile = () => {
                 />
               </label>
             </div>
-  
+
             {/* Отображение альбома портфолио с возможностью удаления */}
             <div className="mt-5">
               {userData?.portfolioImageUrls?.length > 0 && (
                 <div className="border rounded-lg p-4">
-                  <h2 className="text-center text-lg font-bold my-4">Portfolio</h2>
                   <ImageGallery
                     items={userData.portfolioImageUrls.map((img) => ({
                       original: img.url,
                       thumbnail: img.url,
                       renderItem: () => (
                         <div className="relative">
-                          <img
+                        <div className="relative w-full h-auto">
+                          <Image
                             src={img.url}
                             alt="Portfolio"
-                            className="w-full h-auto rounded-lg"
+                            width={800} // Укажите реальную ширину изображения
+                            height={600} // Укажите реальную высоту изображения
+                            className="rounded-lg"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px" // Добавьте `sizes` для оптимизации
+                            style={{ objectFit: "cover" }} // Используем style для замены objectFit
                           />
-                          <button
-                            onClick={() => handlePortfolioDelete(img.id)}
-                            className="absolute top-2 right-2 bg-red-600 text-white text-sm p-2 rounded-full shadow-lg"
-                          >
-                            Löschen
-                          </button>
                         </div>
+                        <button
+                          onClick={() => handlePortfolioDelete(img.id)}
+                          className="absolute top-2 right-2 bg-gray-500 text-white text-sm p-2 rounded-full shadow-lg"
+                        >
+                          Löschen
+                        </button>
+                      </div>
                       ),
                     }))}
                     showFullscreenButton={true} // Кнопка для полного экрана
@@ -576,7 +625,6 @@ const MasterProfile = () => {
       </div>
     </div>
   );
-  
 };
 
 export default MasterProfile;
