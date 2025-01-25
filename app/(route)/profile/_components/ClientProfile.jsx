@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { useUser } from "./UserContext";
 import Image from "next/image";
@@ -9,7 +9,7 @@ const ClientProfile = () => {
   const { user } = useUser();
   const [userData, setUserData] = useState(null);
 
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     if (!user?.accessToken || !user?.user_id) {
       toast.error("Benutzerdaten konnten nicht geladen werden.");
       return;
@@ -35,7 +35,7 @@ const ClientProfile = () => {
       console.error("Fehler beim Laden der Benutzerdaten:", error);
       toast.error("Benutzerdaten konnten nicht geladen werden.");
     }
-  };
+  }, [user]);
 
   const handleImageUpload = async (file) => {
     if (!file) {
@@ -85,7 +85,7 @@ const ClientProfile = () => {
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [fetchUserData]);
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">

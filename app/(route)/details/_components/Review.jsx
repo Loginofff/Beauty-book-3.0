@@ -64,6 +64,7 @@ function MasterReviews({ master }) {
     if (reviewsFetched) {
       getUserNamesForReviews();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviewsFetched]);
 
   const getUserNamesForReviews = async () => {

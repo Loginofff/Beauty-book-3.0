@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "../components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 function Hero() {
   return (
@@ -9,10 +10,13 @@ function Hero() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:grid-cols-2 lg:gap-16 ">
           <div className="relative h-60 lg:h-100 overflow-hidden lg:order-last lg:h-full">
             <div>
-              <img
+              <Image
                 alt="main-image"
                 src="/relaxing.jpg"
+                width={400}
+                height={500}
                 className="h-[500px] w-[400px] object-cover rounded-lg shadow-image"
+                priority // Добавляем свойство priority
               />
             </div>
           </div>
@@ -29,11 +33,11 @@ function Hero() {
               Handwerker, sondern ein echter Künstler, der die Kunst der Pflege
               für Sie beherrscht. Wir bieten Meistern eine einzigartige
               Möglichkeit, ihre Dienstleistungen zu präsentieren, ihren Stil и
-              ihre Fähigkeiten zu betonen, neue Kunden anzuziehen und ihren
+              ihre Fähigkeiten zu betonen, neue Kunden anzuziehen и ihren
               Stammkundenkreis zu erweitern. Auf Beauty Booking finden Sie ein
               breites Spektrum an Dienstleistungen - von Hautpflege bis Make-up,
-              von Maniküre bis Haarstyling. Treten Sie unserer Gemeinschaft bei,
-              um die besten Meister zu entdecken und den perfekten Spezialisten
+              von Maniküre до Haarstyling. Treten Sie unserer Gemeinschaft bei,
+              um die besten Meister zu entdecken и den perfekten Spezialisten
               zu finden, der Ihren Tag noch schöner macht.
             </p>
 

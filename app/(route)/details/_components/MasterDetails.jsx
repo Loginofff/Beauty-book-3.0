@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { FaPhone } from "react-icons/fa";
 import BookAppointment from "./BookAppointment";
@@ -7,6 +8,7 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import MasterRating from "../../details/_components/Rating";
 import MasterReviews from "../../details/_components/Review";
+import Image from "next/image";
 
 function MasterDetails({ master }) {
   const [selectedProcedureId, setSelectedProcedureId] = useState(null);
@@ -16,11 +18,16 @@ function MasterDetails({ master }) {
 
   useEffect(() => {
     async function fetchProcedures() {
-      const promises = master?.procedureIds?.map((id) =>
-        fetch(`http://localhost:8080/api/procedures/${id}`).then((res) => res.json())
-      );
-      const results = await Promise.all(promises || []);
-      setProcedures(results);
+      try {
+        const promises = master?.procedureIds?.map((id) =>
+          fetch(`http://localhost:8080/api/procedures/${id}`).then((res) => res.json())
+        );
+        const results = await Promise.all(promises || []);
+        console.log("Fetched procedures:", results);
+        setProcedures(results);
+      } catch (error) {
+        console.error("Error fetching procedures:", error);
+      }
     }
 
     if (master?.procedureIds) fetchProcedures();
@@ -35,12 +42,13 @@ function MasterDetails({ master }) {
   }, [master]);
 
   const handleProcedureSelection = (procedureId) => {
+    console.log("Selected procedure ID:", procedureId);
     setSelectedProcedureId((prev) => (prev === procedureId ? null : procedureId));
   };
 
   const categories = [
     { id: 1, name: "FRISEUR" },
-    { id: 2, name: "NÄGEL" },
+    { id: 2, name: "NÄGЕЛ" },
     { id: 3, name: "HAARENTFERNUNG" },
     { id: 4, name: "KOSMETIK" },
     { id: 5, name: "MASSAGE" },
@@ -60,9 +68,11 @@ function MasterDetails({ master }) {
         <div className="grid grid-cols-1 md:grid-cols-3 border-[1px] p-5 mt-5 rounded-lg">
           {/* Профильное изображение */}
           <div className="md:col-span-1 flex justify-center items-center">
-            <img
+            <Image
               src={master.profileImageUrl}
               alt="Profil"
+              width={400}
+              height={500}
               className="rounded-lg h-[300px] md:h-[500px] w-[300px] md:w-[400px] object-cover"
             />
           </div>

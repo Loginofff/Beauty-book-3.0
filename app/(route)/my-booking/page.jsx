@@ -9,13 +9,13 @@ import {
 } from "../../components/ui/tabs";
 import BookingList from "../my-booking/_components/BookingList";
 
-function MyBooking({ accessToken }) {
+function MyBooking() {
   const [upcomingBookingList, setUpcomingBookingList] = useState([]);
   const [expiredBookingList, setExpiredBookingList] = useState([]);
 
   useEffect(() => {
     getUserBookingList();
-  }, [accessToken]);
+  }, []);
 
   const getUserBookingList = async () => {
     try {
@@ -143,4 +143,3 @@ function MyBooking({ accessToken }) {
 }
 
 export default MyBooking;
-

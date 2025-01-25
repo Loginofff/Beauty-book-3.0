@@ -7,26 +7,26 @@ function Details({ params }) {
   const [master, setMaster] = useState();
 
   useEffect(() => {
-    getMasterById();
-  }, []);
+    const getMasterById = async () => {
+      try {
+        const res = await fetch(
+          // process.env.NEXT_PUBLIC_PRODUCTION_SERVER +
+          //   `/api/users/${params.recordId}`,
+          `http://localhost:8080/api/users/${params.recordId}`,
+          {
+            headers: { accept: "*/*" },
+          }
+        );
+        const data = await res.json();
+        console.log(data);
+        setMaster(data);
+      } catch (error) {
+        console.error("Error fetching master:", error);
+      }
+    };
 
-  const getMasterById = async () => {
-    try {
-      const res = await fetch(
-        // process.env.NEXT_PUBLIC_PRODUCTION_SERVER +
-        //   `/api/users/${params.recordId}`,
-        `http://localhost:8080/api/users/${params.recordId}`,
-        {
-          headers: { accept: "*/*" },
-        }
-      );
-      const data = await res.json();
-      console.log(data);
-      setMaster(data);
-    } catch (error) {
-      console.error("Error fetching master:", error);
-    }
-  };
+    getMasterById();
+  }, [params.recordId]); // Add params.recordId as dependency
 
   return (
     <div className="p-5">

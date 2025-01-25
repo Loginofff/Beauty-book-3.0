@@ -178,4 +178,3 @@ function BookingList({ bookingList }) {
 }
 
 export default BookingList;
-

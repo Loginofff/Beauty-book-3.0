@@ -83,7 +83,7 @@ function SignIn() {
     if (user) {
       router.push("/");
     }
-  }, []);
+  }, [router]);
 
   return (
     <div className="flex items-baseline justify-center my-20">

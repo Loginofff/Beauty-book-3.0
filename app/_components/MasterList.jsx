@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import MasterRating from "../(route)/details/_components/Rating";
+import Image from "next/image";
 
 function MasterList() {
   const categories = [
@@ -16,25 +17,23 @@ function MasterList() {
   const [displayedMasters, setDisplayedMasters] = useState([]);
 
   useEffect(() => {
+    const getMasterList = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/api/users/masters", {
+          headers: { accept: "*/*" },
+        });
+        const arr = await res.json();
+        console.log(arr);
+        const shuffledMasters = shuffleArray(arr);
+        setMasterList(shuffledMasters);
+        setDisplayedMasters(shuffledMasters.slice(0, 12)); // Отображаем только первые 12 мастеров
+      } catch (error) {
+        console.error("Error fetching masters:", error);
+      }
+    };
+
     getMasterList();
   }, []);
-
-  const getMasterList = async () => {
-    try {
-      const res = await fetch("http://localhost:8080/api/users/masters",
-        {
-          headers: { accept: "*/*" },
-        }
-      );
-      const arr = await res.json();
-      console.log(arr);
-      const shuffledMasters = shuffleArray(arr);
-      setMasterList(shuffledMasters);
-      setDisplayedMasters(shuffledMasters.slice(0, 12)); // Отображаем только первые 12 мастеров
-    } catch (error) {
-      console.error("Error fetching masters:", error);
-    }
-  };
 
   function getCategoryNames(categoryIds) {
     return categoryIds
@@ -74,11 +73,17 @@ function MasterList() {
             key={index}
           >
             <Link href={`/details/${master.id}`}>
-              <img
-                src={master.profileImageUrl}
-                alt={`${master.firstName} ${master.lastName}`}
-                className="h-[400px] w-full object-cover rounded-lg cursor-pointer"
-              />
+              {master.profileImageUrl ? (
+                <Image
+                  src={master.profileImageUrl}
+                  alt={`${master.firstName} ${master.lastName}`}
+                  width={400}
+                  height={400}
+                  className="h-[400px] w-full object-cover rounded-lg cursor-pointer"
+                />
+              ) : (
+                <div className="h-[400px] w-full bg-gray-200 rounded-lg cursor-pointer" />
+              )}
             </Link>
             <div className="mt-3 items-baseline flex flex-col">
               <h2 className="text-[11px] bg-green-900 p-2 rounded-full px-2 text-white ">
@@ -105,4 +110,3 @@ function MasterList() {
 }
 
 export default MasterList;
-

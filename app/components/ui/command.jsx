@@ -1,10 +1,10 @@
 "use client";
-// Поменяйте этот код в файле с вашими компонентами ui/command.jsx
 
 import * as React from "react";
 import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
-import { cn } from "..//../../lib/utils";
+import { cn } from "../../../lib/utils";
+import { Dialog, DialogContent } from "../path/to/dialog"; // Замените на правильный путь к вашим компонентам Dialog и DialogContent
 
 const Command = React.forwardRef(({ className, ...props }, ref) => (
   <CommandPrimitive

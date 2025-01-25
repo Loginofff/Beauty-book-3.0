@@ -73,7 +73,7 @@ function CreateAccount() {
     if (user) {
       router.push("/");
     }
-  }, []);
+  }, [router]);
 
   // Функция для переключения видимости пароля
   const togglePasswordVisibility = () => {

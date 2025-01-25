@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
@@ -11,7 +11,7 @@ export default function Map() {
       lat: 52.4458238,
       lng: 13.6244508,
       label: "MASSAGE",
-      name:"Alexa Do",
+      name: "Alexa Do",
       address: "Spreetunnel, 12587 Berlin",
       index: "12587",
     },
@@ -19,7 +19,7 @@ export default function Map() {
       lat: 52.553813,
       lng: 13.3734081,
       label: "MASSAGE",
-      name:"Nina Schulze",
+      name: "Nina Schulze",
       address: "Exerzierstraße, 21, 13357 Berlin",
       index: "13357",
     },
@@ -27,7 +27,7 @@ export default function Map() {
       lat: 52.4966583,
       lng: 13.291546,
       label: "MAKEUP",
-      name:"Emma Wagner",
+      name: "Emma Wagner",
       address: "Johann-Sigismund-Straße, 16, 10369 Berlin",
       index: "12587",
     },
@@ -35,7 +35,7 @@ export default function Map() {
       lat: 52.5233322,
       lng: 13.3827204,
       label: "HAARENVERFUNG",
-      name:"Marie Braun",
+      name: "Marie Braun",
       address: "Reinhardt str., 15, 10117 Berlin",
       index: "10117",
     },
@@ -43,7 +43,7 @@ export default function Map() {
       lat: 52.4458238,
       lng: 13.6244508,
       label: "KOSMETIK",
-      name:"Julia Koch",
+      name: "Julia Koch",
       address: "Mariendorfer Damm, 45, 12109 Berlin",
       index: "12109",
     },
@@ -51,7 +51,7 @@ export default function Map() {
       lat: 52.4487041,
       lng: 13.3828721,
       label: "NÄGEL",
-      name:"Hanna Schulz",
+      name: "Hanna Schulz",
       address: "Ernststraße, 64, 13509 Berlin",
       index: "13509",
     },
@@ -59,7 +59,7 @@ export default function Map() {
       lat: 52.4448419,
       lng: 13.5747239,
       label: "FRISEUR",
-      name:"Lena Schmidt",
+      name: "Lena Schmidt",
       address: "Kietzer Straße, 13, 12555 Berlin",
       index: "12555",
     },
@@ -67,7 +67,7 @@ export default function Map() {
       lat: 52.5167983,
       lng: 13.3034053,
       label: "FRISEUR",
-      name:"Sophie Weber",
+      name: "Sophie Weber",
       address: "Behaimstraße, 4, 10585 Berlin",
       index: "10585",
     },
@@ -75,25 +75,12 @@ export default function Map() {
   const [markers, setMarkers] = useState(allMarkers);
   const [center, setCenter] = useState([52.520008, 13.404954]); // Начальный центр карты - Берлин
 
-  useEffect(() => {
-    if (query === "") {
-      setMarkers(allMarkers);
-      setCenter([52.520008, 13.404954]);
-    } else {
-      searchPlaces();
-    }
-  }, [query]);
-
-  const handleQueryChange = (event) => {
-    setQuery(event.target.value);
-  };
-
-  const searchPlaces = async () => {
+  const searchPlaces = useCallback(async () => {
     const filteredMarkers = allMarkers.filter(
       (marker) =>
         marker.index === query ||
         marker.label.toLowerCase().includes(query.toLowerCase()) ||
-        marker.address.toLowerCase().includes(query.toLowerCase()) 
+        marker.address.toLowerCase().includes(query.toLowerCase())
     );
     if (filteredMarkers.length > 0) {
       const newCenter = [filteredMarkers[0].lat, filteredMarkers[0].lng];
@@ -103,6 +90,19 @@ export default function Map() {
       setMarkers([]);
       setCenter([52.520008, 13.404954]);
     }
+  }, [allMarkers, query]);
+
+  useEffect(() => {
+    if (query === "") {
+      setMarkers(allMarkers);
+      setCenter([52.520008, 13.404954]);
+    } else {
+      searchPlaces();
+    }
+  }, [query, allMarkers, searchPlaces]);
+
+  const handleQueryChange = (event) => {
+    setQuery(event.target.value);
   };
 
   const addSearchControlToMap = (map) => {
@@ -110,7 +110,7 @@ export default function Map() {
       provider: new OpenStreetMapProvider(),
       style: "bar",
       autoClose: true,
-      searchLabel: "Postleitzahl oder nach  Behandlung suchen",
+      searchLabel: "Postleitzahl oder nach Behandlung suchen",
       keepResult: true,
       showMarker: false,
     });
@@ -128,7 +128,7 @@ export default function Map() {
           type="text"
           value={query}
           onChange={handleQueryChange}
-          placeholder="Postleitzahl oder nach  Behandlung suchen"
+          placeholder="Postleitzahl oder nach Behandlung suchen"
           style={{
             width: "100%",
             padding: "5px",
