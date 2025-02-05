@@ -19,7 +19,7 @@ function MasterList() {
   useEffect(() => {
     const getMasterList = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/users/masters", {
+        const res = await fetch("https://beautybook-production.up.railway.app/api/users/masters", {
           headers: { accept: "*/*" },
         });
         const arr = await res.json();
