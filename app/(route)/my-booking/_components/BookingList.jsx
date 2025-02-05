@@ -22,9 +22,7 @@ function BookingList({ bookingList }) {
           if (booking.procedureId) {
             try {
               const res = await fetch(
-                // process.env.NEXT_PUBLIC_PRODUCTION_SERVER +
-                //   `/api/procedures/${booking.procedureId}`,
-                  `http://localhost:8080/api/procedures/${booking.procedureId}`,
+                  `https://beautybook-production.up.railway.app/api/procedures/${booking.procedureId}`,
                 {
                   method: "GET",
                   headers: {
@@ -63,9 +61,7 @@ function BookingList({ bookingList }) {
   const deleteBooking = async (bookingId) => {
     try {
       const res = await fetch(
-        // process.env.NEXT_PUBLIC_PRODUCTION_SERVER +
-        //   `/api/bookings/${bookingId}`,
-        `http://localhost:8080/api/bookings/${bookingId}`,
+        `https://beautybook-production.up.railway.app/api/bookings/${bookingId}`,
         {
           method: "PATCH",
           headers: {
@@ -75,7 +71,6 @@ function BookingList({ bookingList }) {
         }
       );
 
-      console.log("Delete booking response status:", res.status);
 
       if (!res.ok) {
         throw new Error(`Failed to delete booking with ID ${bookingId}.`);

@@ -23,7 +23,6 @@ function MasterList() {
           headers: { accept: "*/*" },
         });
         const arr = await res.json();
-        console.log(arr);
         const shuffledMasters = shuffleArray(arr);
         setMasterList(shuffledMasters);
         setDisplayedMasters(shuffledMasters.slice(0, 12)); // Отображаем только первые 12 мастеров

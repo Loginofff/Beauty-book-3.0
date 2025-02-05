@@ -16,13 +16,16 @@ const ClientProfile = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/users/${user.user_id}`, {
-        method: "GET",
-        headers: {
-          accept: "*/*",
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
+      const response = await fetch(
+        `https://beautybook-production.up.railway.app/api/users/${user.user_id}`,
+        {
+          method: "GET",
+          headers: {
+            accept: "*/*",
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         toast.error(`Serverfehler: ${response.statusText}`);
@@ -48,7 +51,7 @@ const ClientProfile = () => {
       formData.append("file", file);
 
       const response = await fetch(
-        `http://localhost:8080/api/metadata/${user.user_id}/profileImage`,
+        `https://beautybook-production.up.railway.app/api/metadata/${user.user_id}/profileImage`,
         {
           method: "POST",
           headers: {
@@ -79,7 +82,7 @@ const ClientProfile = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      handleImageUpload(file); // Автоматически загружаем фото
+      handleImageUpload(file);
     }
   };
 
@@ -126,7 +129,9 @@ const ClientProfile = () => {
         </div>
 
         <div className="bg-gray-50 p-6 rounded-lg shadow-inner">
-          <h3 className="text-green-900 font-bold text-2xl mb-4">Informationen</h3>
+          <h3 className="text-green-900 font-bold text-2xl mb-4">
+            Informationen
+          </h3>
           <div className="space-y-4 text-gray-700 text-lg">
             <p>
               <span className="font-bold text-xl text-gray-900">Vorname:</span>{" "}

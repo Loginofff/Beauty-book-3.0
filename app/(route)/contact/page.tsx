@@ -1,72 +1,71 @@
 "use client";
 
-import React from 'react';
+import React from "react";
 import { toast } from "sonner";
 
 export default function Contact() {
-  const [email, setEmail] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [firstName, setFirstName] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
-  const [message, setMessage] = React.useState('');
+  const [email, setEmail] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [message, setMessage] = React.useState("");
 
   const handleSubmit = async (event) => {
-    event.preventDefault();  
+    event.preventDefault();
     const data = {
-      email: email,
-      phone: phone,
-      firstName: firstName,
-      lastName: lastName,
-      message: message
+      email,
+      phone,
+      firstName,
+      lastName,
+      message,
     };
 
-    console.log('Отправляемые данные:', data);
+    console.log("Отправляемые данные:", data);
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/api/users/message-admin",
-        {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${JSON.parse(sessionStorage.getItem("user"))?.accessToken}`,
-        },
-        body: JSON.stringify(data),
-      });
+      const userData = sessionStorage.getItem("user");
+      const token = userData ? JSON.parse(userData).accessToken : null;
 
-      console.log('Статус ответа:', response.status);
+      const response = await fetch(
+        "https://beautybook-production.up.railway.app/api/users/message-admin",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`Ошибка сервера: ${response.status} ${response.statusText}`);
       }
 
-      const result = await response.text();
-      const parsedResult = result ? JSON.parse(result) : null;
+      const resultText = await response.text();
+      const parsedResult = resultText ? JSON.parse(resultText) : "Ответ сервера пуст";
+
+      console.log("Полученный результат:", parsedResult);
+      toast("Nachricht gesendet");
+
       
-      if (parsedResult) {
-        console.log('Полученный результат:', parsedResult);
-        toast("Nachricht gesendet");
-      } else {
-        console.log('Полученный результат:', result);
-        toast("Nachricht gesendet");
-      }
-      
-      setEmail('');
-      setPhone('');
-      setFirstName('');
-      setLastName('');
-      setMessage('');
-      
+      setEmail("");
+      setPhone("");
+      setFirstName("");
+      setLastName("");
+      setMessage("");
     } catch (error) {
-      toast("Error Nachricht gesendet");
-      console.error('Error submitting form:', error);
+      toast("Fehler beim Senden der Nachricht");
+      console.error("Ошибка при отправке формы:", error);
     }
   };
 
   return (
     <div className="mt-7">
-      <form className="container" onSubmit={handleSubmit}
-      style={{ backgroundColor: " transparent" }}
+      <form
+        className="container"
+        onSubmit={handleSubmit}
+        style={{ backgroundColor: "transparent" }}
       >
         <h1 className="text-green-600 text-xl font-extrabold sm:text-5xl">
           Kontaktieren Sie uns
@@ -97,8 +96,8 @@ export default function Contact() {
           />
         </div>
         <div className="name block">
-          <div className='text-green-700'>
-            <label htmlFor="frm-first ">Name:</label>
+          <div className="text-green-700">
+            <label htmlFor="frm-first">Name:</label>
             <input
               id="frm-first"
               type="text"
@@ -109,7 +108,7 @@ export default function Contact() {
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
-          <div className='text-green-700'>
+          <div className="text-green-700">
             <label htmlFor="frm-last">Nachname:</label>
             <input
               id="frm-last"
@@ -131,8 +130,11 @@ export default function Contact() {
             onChange={(e) => setMessage(e.target.value)}
           />
         </div>
-        <div className="button block white ">
-          <button type="submit" className="bg-green-700 text-white font-bold py-2 px-4 rounded-lg cursor-pointer hover:bg-green-800 transition">
+        <div className="button block white">
+          <button
+            type="submit"
+            className="bg-green-700 text-white font-bold py-2 px-4 rounded-lg cursor-pointer hover:bg-green-800 transition"
+          >
             Senden
           </button>
         </div>

@@ -11,7 +11,7 @@ const ProfileImage = ({ profileImage }) => (
           width={192}
           height={192}
           className="rounded-full object-cover shadow-md"
-          style={{ width: "auto", height: "auto" }} // Добавляем стили для поддержания соотношения сторон
+          style={{ width: "auto", height: "auto" }}
           priority
         />
       </div>

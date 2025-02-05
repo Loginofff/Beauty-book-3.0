@@ -22,8 +22,7 @@ function MasterReviews({ master }) {
         setError(null);
         try {
           const response = await fetch(
-            // `${process.env.NEXT_PUBLIC_PRODUCTION_SERVER}/api/reviews/master/${master.id}`
-            `http://localhost:8080/api/reviews/master/${master.id}`
+            `https://beautybook-production.up.railway.app/api/reviews/master/${master.id}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch");
@@ -46,8 +45,7 @@ function MasterReviews({ master }) {
   const fetchUser = async (clientId) => {
     try {
       const response = await fetch(
-        // `${process.env.NEXT_PUBLIC_PRODUCTION_SERVER}/api/users/${clientId}`
-        `http://localhost:8080/api/users/${clientId}`
+        `https://beautybook-production.up.railway.app/api/users/${clientId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch user data");

@@ -56,7 +56,6 @@ function CreateAccount() {
       }
 
       const data = await res.json();
-      console.log("Ответ сервера:", data);
       setUser(data);
       sessionStorage.setItem("user", JSON.stringify(data));
       toast("Konto erfolgreich erstellt");

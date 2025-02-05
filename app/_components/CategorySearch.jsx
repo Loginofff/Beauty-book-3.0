@@ -13,11 +13,10 @@ function CategorySearch() {
 
   const getCategoryList = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/categories", {
+      const res = await fetch("https://beautybook-production.up.railway.app/api/categories", {
         headers: { accept: "*/*" },
       });
       const arr = await res.json();
-      console.log(arr);
       setCategoryList(arr);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -33,7 +32,6 @@ function CategorySearch() {
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {categoryList.slice(0, 6).map((item) => {
           const imagePath = `/${item.name}.png`;
-          // console.log("Image path:", imagePath);
 
           return (
             <Link href={`/search/${item.name}`} key={item.id}>

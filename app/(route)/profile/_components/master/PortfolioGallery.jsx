@@ -4,7 +4,10 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import Image from "next/image";
 
 const PortfolioGallery = ({ images, onDelete }) => (
-  <div className="shadow-xl p-8  rounded-lg w-full max-w-5xl" style={{ backgroundColor: "transparent" }}>
+  <div
+    className="shadow-xl p-8  rounded-lg w-full max-w-5xl"
+    style={{ backgroundColor: "transparent" }}
+  >
     <ImageGallery
       items={images.map((img) => ({
         original: img.url,

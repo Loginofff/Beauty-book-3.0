@@ -10,15 +10,12 @@ function Details({ params }) {
     const getMasterById = async () => {
       try {
         const res = await fetch(
-          // process.env.NEXT_PUBLIC_PRODUCTION_SERVER +
-          //   `/api/users/${params.recordId}`,
-          `http://localhost:8080/api/users/${params.recordId}`,
+          `https://beautybook-production.up.railway.app/api/users/${params.recordId}`,
           {
             headers: { accept: "*/*" },
           }
         );
         const data = await res.json();
-        console.log(data);
         setMaster(data);
       } catch (error) {
         console.error("Error fetching master:", error);
@@ -26,7 +23,7 @@ function Details({ params }) {
     };
 
     getMasterById();
-  }, [params.recordId]); // Add params.recordId as dependency
+  }, [params.recordId]);
 
   return (
     <div className="p-5">

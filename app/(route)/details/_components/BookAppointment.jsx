@@ -23,7 +23,6 @@ const BookAppointment = ({ masterId, selectedProcedureId }) => {
   const [timeSlots, setTimeSlots] = useState([]);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
-  
 
   useEffect(() => {
     getTime();
@@ -61,7 +60,6 @@ const BookAppointment = ({ masterId, selectedProcedureId }) => {
 
     setTimeSlots(timeList);
   };
-
 
   const isPastTime = (time) => {
     const currentTime = new Date();
@@ -101,23 +99,20 @@ const BookAppointment = ({ masterId, selectedProcedureId }) => {
         dateTime: isoDateTime,
       };
 
-      console.log("Booking data:", bookingData);
-
       const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem("user"))?.accessToken}`,
-      },
-      body: JSON.stringify(bookingData),
-    };
-
-      console.log("Request being sent:", requestOptions);
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${
+            JSON.parse(sessionStorage.getItem("user"))?.accessToken
+          }`,
+        },
+        body: JSON.stringify(bookingData),
+      };
 
       const res = await fetch(
-        // process.env.NEXT_PUBLIC_PRODUCTION_SERVER + "/api/bookings",
-        "http://localhost:8080/api/bookings",
+        "https://beautybook-production.up.railway.app/api/bookings",
         requestOptions
       );
       const data = await res.json();
@@ -125,8 +120,6 @@ const BookAppointment = ({ masterId, selectedProcedureId }) => {
       if (!res.ok) {
         throw new Error("Failed to save booking.");
       }
-
-      console.log("Booking saved:", data);
 
       toast("Booking confirmed", { type: "success" });
       setSelectedTimeSlot(null);
@@ -169,10 +162,10 @@ const BookAppointment = ({ masterId, selectedProcedureId }) => {
                   Datum auswählen
                 </h2>
                 <Calendar
-                  value={date} 
-                  onChange={setDate} 
-                  minDate={new Date()} 
-                  className="rounded-lg border p-3" 
+                  value={date}
+                  onChange={setDate}
+                  minDate={new Date()}
+                  className="rounded-lg border p-3"
                 />
               </div>
 
@@ -183,7 +176,7 @@ const BookAppointment = ({ masterId, selectedProcedureId }) => {
                     Verfügbare Zeit
                   </h2>
 
-                  <div className="grid grid-cols-3 gap-2 rounded-lg p-3" >
+                  <div className="grid grid-cols-3 gap-2 rounded-lg p-3">
                     {timeSlots?.map((time, index) => (
                       <h2
                         key={index}
@@ -210,7 +203,7 @@ const BookAppointment = ({ masterId, selectedProcedureId }) => {
                 Close
               </Button>
               <Button
-              style={{ backgroundColor: "#006400", color: '#ffffff'}}
+                style={{ backgroundColor: "#006400", color: "#ffffff" }}
                 onClick={saveBooking}
                 disabled={!(date && selectedTimeSlot) || loading}
               >
@@ -225,4 +218,3 @@ const BookAppointment = ({ masterId, selectedProcedureId }) => {
 };
 
 export default BookAppointment;
-

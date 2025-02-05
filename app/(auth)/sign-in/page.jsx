@@ -67,7 +67,6 @@ function SignIn() {
       }
 
       const data = await res.json();
-      console.log(data);
       setUser("user");
       sessionStorage.setItem("user", JSON.stringify(data));
       toast("Erfolgreich angemeldet");

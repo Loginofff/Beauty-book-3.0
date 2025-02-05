@@ -20,7 +20,6 @@ function MyBooking() {
   const getUserBookingList = async () => {
     try {
       const currentUser = JSON.parse(sessionStorage.getItem("user"));
-      console.log("Current user:", currentUser);
 
       if (!currentUser || !currentUser.accessToken) {
         console.error("Access token is missing:", currentUser);
@@ -29,7 +28,6 @@ function MyBooking() {
 
       const tokenPayload = currentUser.accessToken.split(".")[1];
       const decodedToken = JSON.parse(atob(tokenPayload));
-      console.log("Decoded token:", decodedToken);
 
       if (!decodedToken || !decodedToken.user_id) {
         console.error("User ID is missing in decoded token:", decodedToken);
@@ -37,12 +35,9 @@ function MyBooking() {
       }
 
       const userId = decodedToken.user_id;
-      console.log("User ID:", userId);
 
       const res = await fetch(
-        // process.env.NEXT_PUBLIC_PRODUCTION_SERVER +
-        //   `/api/bookings/${userId}?status=CONFIRMED`,
-          `http://localhost:8080/api/bookings/${userId}?status=CONFIRMED`,
+        `https://beautybook-production.up.railway.app/api/bookings/${userId}?status=CONFIRMED`,
         {
           method: "GET",
           headers: {
@@ -53,7 +48,6 @@ function MyBooking() {
         }
       );
 
-      console.log("Response status:", res.status);
       const data = await res.json();
       console.log("Response data:", data);
 
@@ -74,9 +68,7 @@ function MyBooking() {
       const updatedUpcomingBookings = await Promise.all(
         upcomingBookings.map(async (booking) => {
           const procedureRes = await fetch(
-            // process.env.NEXT_PUBLIC_PRODUCTION_SERVER +
-            //   `/api/procedures/${booking.procedureId}`,
-              `http://localhost:8080/api/procedures/${booking.procedureId}`,
+            `https://beautybook-production.up.railway.app/api/procedures/${booking.procedureId}`,
             {
               method: "GET",
               headers: {
@@ -87,12 +79,9 @@ function MyBooking() {
             }
           );
           const procedureData = await procedureRes.json();
-          console.log("Procedure data:", procedureData);
 
           const masterRes = await fetch(
-            // process.env.NEXT_PUBLIC_PRODUCTION_SERVER +
-            //   `/api/users/${booking.masterId}`,
-              `http://localhost:8080/api/users/${booking.masterId}`,
+            `https://beautybook-production.up.railway.app/api/users/${booking.masterId}`,
             {
               method: "GET",
               headers: {
@@ -103,7 +92,6 @@ function MyBooking() {
             }
           );
           const masterData = await masterRes.json();
-          console.log("Master data:", masterData);
 
           return {
             ...booking,

@@ -20,10 +20,11 @@ function MasterDetails({ master }) {
     async function fetchProcedures() {
       try {
         const promises = master?.procedureIds?.map((id) =>
-          fetch(`http://localhost:8080/api/procedures/${id}`).then((res) => res.json())
+          fetch(
+            `https://beautybook-production.up.railway.app/api/procedures/${id}`
+          ).then((res) => res.json())
         );
         const results = await Promise.all(promises || []);
-        console.log("Fetched procedures:", results);
         setProcedures(results);
       } catch (error) {
         console.error("Error fetching procedures:", error);
@@ -42,8 +43,9 @@ function MasterDetails({ master }) {
   }, [master]);
 
   const handleProcedureSelection = (procedureId) => {
-    console.log("Selected procedure ID:", procedureId);
-    setSelectedProcedureId((prev) => (prev === procedureId ? null : procedureId));
+    setSelectedProcedureId((prev) =>
+      prev === procedureId ? null : procedureId
+    );
   };
 
   const categories = [
@@ -57,7 +59,9 @@ function MasterDetails({ master }) {
 
   function getCategoryNames(categoryIds) {
     return categoryIds
-      .map((id) => categories.find((category) => category.id === id)?.name || null)
+      .map(
+        (id) => categories.find((category) => category.id === id)?.name || null
+      )
       .filter(Boolean)
       .join(", ");
   }
@@ -107,13 +111,17 @@ function MasterDetails({ master }) {
 
           {/* Процедуры */}
           <div className="md:col-span-1 mt-5 md:mt-0 md:col-start-3 flex flex-col">
-            <h2 className="font-bold text-center">Wählen Sie eine Behandlung aus</h2>
+            <h2 className="font-bold text-center">
+              Wählen Sie eine Behandlung aus
+            </h2>
             <div className="mt-5 flex flex-col gap-3">
               {procedures.map((procedure) => (
                 <button
                   key={procedure.id}
                   className={`px-3 py-2 rounded-lg text-white text-center ${
-                    selectedProcedureId === procedure.id ? "bg-blue-500" : "bg-green-700"
+                    selectedProcedureId === procedure.id
+                      ? "bg-blue-500"
+                      : "bg-green-700"
                   } hover:bg-green-600`}
                   onClick={() => handleProcedureSelection(procedure.id)}
                 >

@@ -9,14 +9,12 @@ function MasterRating({ master }) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          // `${process.env.NEXT_PUBLIC_PRODUCTION_SERVER}/api/reviews/rating/${master.id}`
-          `http://localhost:8080/api/reviews/rating/${master.id}`
+          `https://beautybook-production.up.railway.app/api/reviews/rating/${master.id}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        console.log("Received data:", data);
         setRating(data);
       } catch (error) {
         console.error("There was a problem with the fetch operation:", error);

@@ -11,17 +11,18 @@ function CategoryList() {
   useEffect(() => {
     const getCategoryList = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/categories", {
-          headers: { accept: "*/*" },
-        });
+        const res = await fetch(
+          "https://beautybook-production.up.railway.app/api/categories",
+          {
+            headers: { accept: "*/*" },
+          }
+        );
 
         if (!res.ok) {
           throw new Error("Failed to fetch categories.");
         }
 
         const arr = await res.json();
-
-        console.log("Categories fetched from server:", arr);
 
         setCategoryList(arr);
       } catch (error) {
@@ -50,9 +51,7 @@ function CategoryList() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <div
-        className="flex md:flex-col gap-2 md:gap-0 overflow-x-auto md:overflow-hidden"
-      >
+      <div className="flex md:flex-col gap-2 md:gap-0 overflow-x-auto md:overflow-hidden">
         {filteredCategories.length === 0 ? (
           <div>No results found.</div>
         ) : (

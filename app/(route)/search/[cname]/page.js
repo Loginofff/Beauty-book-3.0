@@ -14,12 +14,11 @@ function Search({ params }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/categories");
+        const response = await fetch("https://beautybook-production.up.railway.app/api/categories");
         if (!response.ok) {
           throw new Error("Failed to fetch categories.");
         }
         const data = await response.json();
-        console.log("Fetched categories:", data);
         setCategories(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -49,7 +48,7 @@ function Search({ params }) {
     setError("");
     try {
       const response = await fetch(
-        `http://localhost:8080/api/users/by-category/${categoryId}`
+        `https://beautybook-production.up.railway.app/api/users/by-category/${categoryId}`
       );
 
       if (!response.ok) {

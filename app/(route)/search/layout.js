@@ -10,9 +10,7 @@ function Layout({ children }) {
       </div>
 
       {/* Правая колонка для карточек мастеров */}
-      <div className="col-span-12 md:col-span-9 w-full p-5">
-        {children}
-      </div>
+      <div className="col-span-12 md:col-span-9 w-full p-5">{children}</div>
     </div>
   );
 }
