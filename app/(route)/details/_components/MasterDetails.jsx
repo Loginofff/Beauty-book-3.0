@@ -1,4 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { FaPhone } from "react-icons/fa";
 import BookAppointment from "./BookAppointment";
@@ -71,11 +73,9 @@ function MasterDetails({ master }) {
         <div className="grid grid-cols-1 md:grid-cols-3 border-[1px] p-5 mt-5 rounded-lg">
           {/* Профильное изображение */}
           <div className="md:col-span-1 flex justify-center items-center">
-            <Image
+            <img
               src={master.profileImageUrl}
               alt="Profil"
-              width={400}
-              height={500}
               className="rounded-lg h-[300px] md:h-[500px] w-[300px] md:w-[400px] object-cover"
             />
           </div>

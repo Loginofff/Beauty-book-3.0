@@ -16,6 +16,7 @@ function Details({ params }) {
           }
         );
         const data = await res.json();
+        console.log(data);
         setMaster(data);
       } catch (error) {
         console.error("Error fetching master:", error);
@@ -23,7 +24,7 @@ function Details({ params }) {
     };
 
     getMasterById();
-  }, [params.recordId]);
+  }, [params.recordId]); // Add params.recordId as dependency
 
   return (
     <div className="p-5">
