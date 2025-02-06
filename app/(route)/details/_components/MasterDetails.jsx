@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { FaPhone } from "react-icons/fa";
 import BookAppointment from "./BookAppointment";

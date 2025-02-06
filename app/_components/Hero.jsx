@@ -16,7 +16,7 @@ function Hero() {
                 width={400}
                 height={500}
                 className="h-[500px] w-[400px] object-cover rounded-lg shadow-image"
-                priority // Добавляем свойство priority
+                priority 
               />
             </div>
           </div>

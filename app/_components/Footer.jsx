@@ -122,7 +122,7 @@ function Footer() {
 
           <li>
             <a
-              href="https://github.com/Loginofff/beauty-project"
+              href="https://github.com/Loginofff/Beauty-book-3.0"
               rel="noreferrer"
               target="_blank"
               className="text-gray-700 transition hover:text-gray-700/75"
