@@ -73,11 +73,13 @@ function MasterDetails({ master }) {
         <div className="grid grid-cols-1 md:grid-cols-3 border-[1px] p-5 mt-5 rounded-lg">
           {/* Профильное изображение */}
           <div className="md:col-span-1 flex justify-center items-center">
-            <img
-              src={master.profileImageUrl || "/placeholder.png"}
-              alt="Profil"
-              className="rounded-2xl shadow-lg h-[300px] md:h-[500px] w-[300px] md:w-[400px] object-cover"
-            />
+            <div className="w-[300px] md:w-[400px] h-[300px] md:h-[500px] overflow-hidden rounded-xl shadow-lg">
+              <img
+                src={master.profileImageUrl || "/placeholder.png"}
+                alt="Profil"
+                className="w-full h-full object-contain"
+              />
+            </div>
           </div>
 
           {/* Основная информация */}
