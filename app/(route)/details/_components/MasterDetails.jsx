@@ -76,7 +76,7 @@ function MasterDetails({ master }) {
             <img
               src={master.profileImageUrl || "/placeholder.png"}
               alt="Profil"
-              className="rounded-lg h-[300px] md:h-[500px] w-[300px] md:w-[400px] object-cover"
+              className="rounded-2xl shadow-lg h-[300px] md:h-[500px] w-[300px] md:w-[400px] object-cover"
             />
           </div>
 
