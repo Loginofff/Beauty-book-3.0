@@ -14,7 +14,7 @@ function Search({ params }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("hhttps://beautybook-production-c53c.up.railway.app/api/categories");
+        const response = await fetch("https://beautybook-production-c53c.up.railway.app/api/categories");
         if (!response.ok) {
           throw new Error("Failed to fetch categories.");
         }
