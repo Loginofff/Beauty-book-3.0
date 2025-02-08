@@ -10,7 +10,7 @@ function Details({ params }) {
     const getMasterById = async () => {
       try {
         const res = await fetch(
-          `https://beautybook-production.up.railway.app/api/users/${params.recordId}`,
+          `https://beautybook-production-c53c.up.railway.app/api/users/${params.recordId}`,
           {
             headers: { accept: "*/*" },
           }

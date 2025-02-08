@@ -9,7 +9,7 @@ function MasterRating({ master }) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://beautybook-production.up.railway.app/api/reviews/rating/${master.id}`
+          `https://beautybook-production-c53c.up.railway.app/api/reviews/rating/${master.id}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");

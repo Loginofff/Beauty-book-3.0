@@ -12,7 +12,7 @@ function CategoryList() {
     const getCategoryList = async () => {
       try {
         const res = await fetch(
-          "https://beautybook-production.up.railway.app/api/categories",
+          "https://beautybook-production-c53c.up.railway.app/api/categories",
           {
             headers: { accept: "*/*" },
           }

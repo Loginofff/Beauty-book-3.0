@@ -17,7 +17,7 @@ const ClientProfile = () => {
 
     try {
       const response = await fetch(
-        `https://beautybook-production.up.railway.app/api/users/${user.user_id}`,
+        `hhttps://beautybook-production-c53c.up.railway.app/api/users/${user.user_id}`,
         {
           method: "GET",
           headers: {
@@ -51,7 +51,7 @@ const ClientProfile = () => {
       formData.append("file", file);
 
       const response = await fetch(
-        `https://beautybook-production.up.railway.app/api/metadata/${user.user_id}/profileImage`,
+        `https://beautybook-production-c53c.up.railway.app/api/metadata/${user.user_id}/profileImage`,
         {
           method: "POST",
           headers: {

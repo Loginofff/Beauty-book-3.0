@@ -13,7 +13,7 @@ function CategorySearch() {
 
   const getCategoryList = async () => {
     try {
-      const res = await fetch("https://beautybook-production.up.railway.app/api/categories", {
+      const res = await fetch("https://beautybook-production-c53c.up.railway.app/api/categories", {
         headers: { accept: "*/*" },
       });
       const arr = await res.json();

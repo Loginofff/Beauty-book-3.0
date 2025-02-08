@@ -27,7 +27,7 @@ export default function Contact() {
       const token = userData ? JSON.parse(userData).accessToken : null;
 
       const response = await fetch(
-        "https://beautybook-production.up.railway.app/api/users/message-admin",
+        "https://beautybook-production-c53c.up.railway.app/api/users/message-admin",
         {
           method: "POST",
           headers: {

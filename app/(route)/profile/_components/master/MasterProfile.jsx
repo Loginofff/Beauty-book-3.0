@@ -24,7 +24,7 @@ const MasterProfile = () => {
 
   const fetchCategories = useCallback(async () => {
     try {
-      const response = await fetch(`https://beautybook-production.up.railway.app/api/categories`);
+      const response = await fetch(`https://beautybook-production-c53c.up.railway.app/api/categories`);
       if (!response.ok) {
         throw new Error("Failed to fetch categories");
       }
@@ -39,7 +39,7 @@ const MasterProfile = () => {
     if (categoryIds.length > 0) {
       try {
         const promises = categoryIds.map((categoryId) =>
-          fetch(`https://beautybook-production.up.railway.app/api/procedures/by-category/${categoryId}`).then((res) => res.json())
+          fetch(`https://beautybook-production-c53c.up.railway.app/api/procedures/by-category/${categoryId}`).then((res) => res.json())
         );
         const results = await Promise.all(promises);
         setProcedures(results.flat());
@@ -85,7 +85,7 @@ const MasterProfile = () => {
 
     try {
       const response = await fetch(
-        `https://beautybook-production.up.railway.app/api/users/${user.user_id}/details`,
+        `https://beautybook-production-c53c.up.railway.app/api/users/${user.user_id}/details`,
         {
           method: "PUT",
           headers: {
@@ -125,7 +125,7 @@ const MasterProfile = () => {
     }
 
     try {
-      const response = await fetch(`https://beautybook-production.up.railway.app/api/users/${user.user_id}`, {
+      const response = await fetch(`https://beautybook-production-c53c.up.railway.app/api/users/${user.user_id}`, {
         method: "GET",
         headers: {
           accept: "*/*",
@@ -167,7 +167,7 @@ const MasterProfile = () => {
 
     try {
       const response = await fetch(
-        `https://beautybook-production.up.railway.app/api/metadata/${user.user_id}/profileImage`,
+        `https://beautybook-production-c53c.up.railway.app/api/metadata/${user.user_id}/profileImage`,
         {
           method: "POST",
           headers: {
@@ -219,7 +219,7 @@ const MasterProfile = () => {
 
     try {
       const response = await fetch(
-        `https://beautybook-production.up.railway.app/api/metadata/${user.user_id}/portfolioImages`,
+        `https://beautybook-production-c53c.up.railway.app/api/metadata/${user.user_id}/portfolioImages`,
         {
           method: "POST",
           headers: {
@@ -247,7 +247,7 @@ const MasterProfile = () => {
   const handlePortfolioDelete = async (imageId) => {
     try {
       const response = await fetch(
-        `https://beautybook-production.up.railway.app/api/metadata/${user.user_id}/portfolioImage/${imageId}`,
+        `https://beautybook-production-c53c.up.railway.app/api/metadata/${user.user_id}/portfolioImage/${imageId}`,
         {
           method: "DELETE",
           headers: {

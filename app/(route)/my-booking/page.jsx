@@ -37,7 +37,7 @@ function MyBooking() {
       const userId = decodedToken.user_id;
 
       const res = await fetch(
-        `https://beautybook-production.up.railway.app/api/bookings/${userId}?status=CONFIRMED`,
+        `https://beautybook-production-c53c.up.railway.app/api/bookings/${userId}?status=CONFIRMED`,
         {
           method: "GET",
           headers: {
@@ -68,7 +68,7 @@ function MyBooking() {
       const updatedUpcomingBookings = await Promise.all(
         upcomingBookings.map(async (booking) => {
           const procedureRes = await fetch(
-            `https://beautybook-production.up.railway.app/api/procedures/${booking.procedureId}`,
+            `https://beautybook-production-c53c.up.railway.app/api/procedures/${booking.procedureId}`,
             {
               method: "GET",
               headers: {
@@ -81,7 +81,7 @@ function MyBooking() {
           const procedureData = await procedureRes.json();
 
           const masterRes = await fetch(
-            `https://beautybook-production.up.railway.app/api/users/${booking.masterId}`,
+            `https://beautybook-production-c53c.up.railway.app/api/users/${booking.masterId}`,
             {
               method: "GET",
               headers: {

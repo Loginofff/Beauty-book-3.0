@@ -40,7 +40,7 @@ function CreateAccount() {
     };
 
     try {
-      const res = await fetch("https://beautybook-production.up.railway.app/api/users/register", {
+      const res = await fetch("https://beautybook-production-c53c.up.railway.app/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

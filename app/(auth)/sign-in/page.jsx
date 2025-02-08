@@ -45,7 +45,7 @@ function SignIn() {
         hashPassword: password,
       };
 
-      const res = await fetch("https://beautybook-production.up.railway.app/api/auth/login", {
+      const res = await fetch("https://beautybook-production-c53c.up.railway.app/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

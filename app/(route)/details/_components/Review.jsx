@@ -22,7 +22,7 @@ function MasterReviews({ master }) {
         setError(null);
         try {
           const response = await fetch(
-            `https://beautybook-production.up.railway.app/api/reviews/master/${master.id}`
+            `https://beautybook-production-c53c.up.railway.app/api/reviews/master/${master.id}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch");
@@ -45,7 +45,7 @@ function MasterReviews({ master }) {
   const fetchUser = async (clientId) => {
     try {
       const response = await fetch(
-        `https://beautybook-production.up.railway.app/api/users/${clientId}`
+        `https://beautybook-production-c53c.up.railway.app/api/users/${clientId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch user data");

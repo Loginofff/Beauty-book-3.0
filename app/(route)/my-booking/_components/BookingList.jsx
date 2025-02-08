@@ -22,7 +22,7 @@ function BookingList({ bookingList }) {
           if (booking.procedureId) {
             try {
               const res = await fetch(
-                  `https://beautybook-production.up.railway.app/api/procedures/${booking.procedureId}`,
+                  `https://beautybook-production-c53c.up.railway.app/api/procedures/${booking.procedureId}`,
                 {
                   method: "GET",
                   headers: {
@@ -61,7 +61,7 @@ function BookingList({ bookingList }) {
   const deleteBooking = async (bookingId) => {
     try {
       const res = await fetch(
-        `https://beautybook-production.up.railway.app/api/bookings/${bookingId}`,
+        `https://beautybook-production-c53c.up.railway.app/api/bookings/${bookingId}`,
         {
           method: "PATCH",
           headers: {

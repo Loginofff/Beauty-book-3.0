@@ -22,7 +22,7 @@ function MasterDetails({ master }) {
       try {
         const promises = master?.procedureIds?.map((id) =>
           fetch(
-            `https://beautybook-production.up.railway.app/api/procedures/${id}`
+            `https://beautybook-production-c53c.up.railway.app/api/procedures/${id}`
           ).then((res) => res.json())
         );
         const results = await Promise.all(promises || []);

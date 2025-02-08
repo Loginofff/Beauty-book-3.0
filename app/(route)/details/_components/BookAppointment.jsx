@@ -112,7 +112,7 @@ const BookAppointment = ({ masterId, selectedProcedureId }) => {
       };
 
       const res = await fetch(
-        "https://beautybook-production.up.railway.app/api/bookings",
+        "https://beautybook-production-c53c.up.railway.app/api/bookings",
         requestOptions
       );
       const data = await res.json();
