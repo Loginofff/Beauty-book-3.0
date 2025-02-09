@@ -45,7 +45,7 @@ function Header() {
   ];
 
   return (
-    <div className="flex items-center justify-between ml-4 mr-4 mt-1">
+    <div className="flex items-center justify-between ml-4 mr-4">
       <div className="flex items-center gap-20 right-4">
         <Link href="/">
         <Image

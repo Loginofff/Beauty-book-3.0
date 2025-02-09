@@ -15,6 +15,7 @@ export default function App({children}) {
   setUser(sessionStorage.getItem("user"))
   },[])
   return (
+    
     <AuthContext.Provider value={{ user, setUser }}>
       <BackgroundAnimation />
       <div>
