@@ -15,58 +15,23 @@ function BackgroundAnimation() {
         }}
       >
         <defs>
-          <radialGradient
-            id="Gradient1"
-            cx="50%"
-            cy="50%"
-            fx="10%"
-            fy="50%"
-            r=".5"
-          >
-            <animate
-              attributeName="fx"
-              dur="34s"
-              values="0%;3%;0%"
-              repeatCount="indefinite"
-            />
-            <stop offset="4%" stopColor="#AEC670" />
-            <stop offset="100%" stopColor="#ff00" />
-          </radialGradient>
-          <radialGradient
-            id="Gradient1"
-            cx="50%"
-            cy="50%"
-            fx="10%"
-            fy="50%"
-            r=".5"
-          >
-            <animate
-              attributeName="fx"
-              dur="34s"
-              values="0%;3%;0%"
-              repeatCount="indefinite"
-            />
-            <stop offset="0%" stopColor="#344C11" />
-            <stop offset="100%" stopColor="#ff00" />
-          </radialGradient>
-          <radialGradient
-            id="Gradient1"
-            cx="50%"
-            cy="50%"
-            fx="10%"
-            fy="50%"
-            r=".5"
-          >
-            <animate
-              attributeName="fx"
-              dur="34s"
-              values="0%;3%;0%"
-              repeatCount="indefinite"
-            />
-            <stop offset="6%" stopColor="#1A2902" />
-            <stop offset="100%" stopColor="#ff00" />
-          </radialGradient>
-        </defs>
+  <radialGradient id="Gradient1" cx="50%" cy="50%" fx="10%" fy="50%" r=".5">
+    <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite" />
+    <stop offset="4%" stopColor="#AEC670" />
+    <stop offset="100%" stopColor="#ff00" />
+  </radialGradient>
+  <radialGradient id="Gradient2" cx="50%" cy="50%" fx="10%" fy="50%" r=".5">
+    <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite" />
+    <stop offset="0%" stopColor="#344C11" />
+    <stop offset="100%" stopColor="#ff00" />
+  </radialGradient>
+  <radialGradient id="Gradient3" cx="50%" cy="50%" fx="10%" fy="50%" r=".5">
+    <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite" />
+    <stop offset="6%" stopColor="#1A2902" />
+    <stop offset="100%" stopColor="#ff00" />
+  </radialGradient>
+</defs>
+
         <rect x="0" y="0" width="100%" height="100%" fill="url(#Gradient1)">
           <animate
             attributeName="x"

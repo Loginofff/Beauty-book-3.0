@@ -128,7 +128,7 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="message block text-green-700">
+        <div className="message block text-green-700 ">
           <label htmlFor="frm-message">Nachricht</label>
           <textarea
             id="frm-message"
