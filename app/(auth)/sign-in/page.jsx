@@ -11,75 +11,79 @@ import { AuthContext } from "../../context/AuthContext";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // Состояние для видимости пароля
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { setUser } = useContext(AuthContext);
 
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+  // Валидация email
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  // Валидация пароля
+  const validatePassword = (password) => password.length >= 8;
+
+  // Перевод ошибок на немецкий
+  const translateError = (message) => {
+    const translations = {
+      "Incorrect login or password": "Falsche E-Mail oder falsches Passwort.",
+      "Account not found": "Konto nicht gefunden.",
+      "Login failed": "Anmeldung fehlgeschlagen.",
+    };
+    return translations[message] || "Ein unbekannter Fehler ist aufgetreten.";
   };
 
-  const validatePassword = (password) => {
-    return password.length >= 8;
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
+  // Отправка данных для входа
   const onLoginAccount = async () => {
     if (!validateEmail(email)) {
-      toast("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
+      toast.error("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
       return;
     }
 
     if (!validatePassword(password)) {
-      toast("Das Passwort muss mindestens 8 Zeichen enthalten.");
+      toast.error("Das Passwort muss mindestens 8 Zeichen enthalten.");
       return;
     }
 
     try {
-      const userData = {
-        email,
-        hashPassword: password,
-      };
+      const userData = { email, hashPassword: password };
 
-      const res = await fetch("https://beautybook-production-c53c.up.railway.app/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "*/*",
-        },
-        body: JSON.stringify(userData),
-      });
+      const res = await fetch(
+        "https://beautybook-production-c53c.up.railway.app/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify(userData),
+        }
+      );
 
-      if (res.status === 401) {
-        throw new Error("Неправильный логин или пароль");
-      }
-
-      if (res.status === 404) {
-        throw new Error("Аккаунт не найден");
-      }
-
+      // Проверка кода ответа
       if (!res.ok) {
-        throw new Error("Login fehlgeschlagen");
+        let errorMessage = "Anmeldung fehlgeschlagen.";
+        if (res.headers.get("content-type")?.includes("application/json")) {
+          const errorData = await res.json();
+          errorMessage = translateError(errorData.message || errorMessage);
+        }
+        toast.error(errorMessage);
+        return;
       }
 
+      // Успешный вход
       const data = await res.json();
-      setUser("user");
+      setUser(data);
       sessionStorage.setItem("user", JSON.stringify(data));
-      toast("Erfolgreich angemeldet");
+      toast.success("Erfolgreich angemeldet!");
       router.push("/");
     } catch (error) {
       console.error("Fehler beim Login:", error);
-      toast(error.message);
+      toast.error("Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.");
     }
   };
 
+  // Перенаправление, если пользователь уже авторизован
   useEffect(() => {
-    const user = sessionStorage.getItem("user");
-    if (user) {
+    if (sessionStorage.getItem("user")) {
       router.push("/");
     }
   }, [router]);
@@ -88,46 +92,48 @@ function SignIn() {
     <div className="flex items-baseline justify-center my-20">
       <div className="flex flex-col items-center justify-center p-10 bg-blur-sm">
         <h2 className="font-bold text-3xl">Anmeldung</h2>
-        <h2 className="text-black">Geben Sie Ihre E-Mail und Ihr Passwort ein</h2>
+        <h2 className="text-gray-500">Geben Sie Ihre E-Mail und Ihr Passwort ein</h2>
 
         <div className="w-full flex flex-col gap-5 mt-7">
           <Input
+            style={{ color: "black", backgroundColor: "white" }}
             placeholder="name@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="text-black bg-white"
             required
           />
           <div className="relative">
             <Input
+              style={{ color: "black", backgroundColor: "white" }}
               type={showPassword ? "text" : "password"}
               placeholder="Passwort"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="text-black bg-white pr-12"
-              title="Das Passwort muss mindestens 8 Zeichen enthalten"
+              required
             />
             <button
               type="button"
-              onClick={togglePasswordVisibility}
+              onClick={() => setShowPassword(!showPassword)}
               className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-black"
-              aria-label={showPassword ? "Passwort verstecken" : "Passwort zeigen"}
+              aria-label={showPassword ? "Passwort verstecken" : "Passwort anzeigen"}
             >
               {showPassword ? "👁️" : "🔒"}
             </button>
           </div>
+
           <Button
             className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300"
             style={{ backgroundColor: "#006400", color: "#ffffff" }}
             onClick={onLoginAccount}
-            disabled={!email || !password || !validateEmail(email) || !validatePassword(password)}
+            disabled={!email || !password}
           >
             Anmeldung
           </Button>
+
           <p>
-            Ich habe keine Konto{" "}
+            Ich habe kein Konto{" "}
             <Link href={"/create-account"} className="text-green-600 ml-3">
-              -Klicken Sie hier, um sich zu registrieren
+              - Hier registrieren
             </Link>
           </p>
         </div>
