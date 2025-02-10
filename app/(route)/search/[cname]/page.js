@@ -137,7 +137,7 @@ function Search({ params }) {
             ))}
             {/* Пагинация, если мастеров больше чем на одну страницу */}
             {totalPages > 1 && (
-              <div className="ml-[280px] mt-5">
+              <div className="ml-[240px] mt-5">
                 <button
                   className={`px-4 py-2 border rounded-lg mx-1 ${
                     currentPage === 1
