@@ -10,15 +10,11 @@ function Search({ params }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [categories, setCategories] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const mastersPerPage = 5;
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(
-          "https://beautybook-production-c53c.up.railway.app/api/categories"
-        );
+        const response = await fetch("https://beautybook-production-c53c.up.railway.app/api/categories");
         if (!response.ok) {
           throw new Error("Failed to fetch categories.");
         }
@@ -92,12 +88,12 @@ function Search({ params }) {
             className="w-[100px] h-[100px] rounded-full object-cover sm:mr-5"
           />
           <div className="flex-1 text-center sm:text-left">
-            <p className="text-sm bg-green-900 text-white p-2 rounded-full mt-1 inline-block">
+            <p
+              className="text-sm bg-green-900 text-white p-2 rounded-full mt-1 inline-block"
+            >
               {categoryNames.join(", ")}
             </p>
-            <h2 className="font-bold mt-2">
-              {master.firstName} {master.lastName}
-            </h2>
+            <h2 className="font-bold mt-2">{master.firstName} {master.lastName}</h2>
             <p className="text-gray-500 text-sm mt-1">Address: {master.address}</p>
             <MasterRating master={master} />
           </div>
@@ -113,64 +109,17 @@ function Search({ params }) {
     );
   };
 
-  // Пагинация: Разбиваем мастеров на страницы
-  const indexOfLastMaster = currentPage * mastersPerPage;
-  const indexOfFirstMaster = indexOfLastMaster - mastersPerPage;
-  const currentMasters = masters.slice(indexOfFirstMaster, indexOfLastMaster);
-
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="p-5 flex-grow">
-        {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p>{error}</p>
-        ) : currentMasters.length > 0 ? (
-          currentMasters.map((master) => <MasterCard key={master.id} master={master} />)
-        ) : (
-          <p>No masters found in this category.</p>
-        )}
-
-        {/* Пагинация */}
-        {masters.length > mastersPerPage && (
-          <div className="flex justify-center mt-5">
-            <button
-              className={`px-4 py-2 border rounded-lg mx-1 ${
-                currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-green-700 text-white"
-              }`}
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              ←
-            </button>
-
-            <span className="px-4 py-2 border rounded-lg bg-white">
-              {currentPage} / {Math.ceil(masters.length / mastersPerPage)}
-            </span>
-
-            <button
-              className={`px-4 py-2 border rounded-lg mx-1 ${
-                currentPage === Math.ceil(masters.length / mastersPerPage)
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-green-700 text-white"
-              }`}
-              onClick={() =>
-                setCurrentPage((prev) =>
-                  Math.min(prev + 1, Math.ceil(masters.length / mastersPerPage))
-                )
-              }
-              disabled={currentPage === Math.ceil(masters.length / mastersPerPage)}
-            >
-              →
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Футер */}
-      <footer className="bg-gray-800 text-white text-center p-4 mt-10">
-        <p>© 2025 BeautyBook. Alle Rechte vorbehalten.</p>
-      </footer>
+    <div className="p-5">
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : masters.length > 0 ? (
+        masters.map((master) => <MasterCard key={master.id} master={master} />)
+      ) : (
+        <p>No masters found in this category.</p>
+      )}
     </div>
   );
 }
