@@ -18,40 +18,37 @@ function CreateAccount() {
   const router = useRouter();
   const { setUser } = useContext(AuthContext);
 
-  // Функция для локальной валидации пароля
-  const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])(?=\S+$).{8,}$/;
-    return regex.test(password);
-  };
+  // Функции для валидации email и пароля
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePassword = (password) =>
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])(?=\S+$).{8,}$/.test(password);
 
-  // Функция перевода ошибок на немецкий
+  // Перевод ошибок на немецкий
   const translateError = (message) => {
     const translations = {
-      "Email already exists": "Diese E-Mail-Adresse ist bereits registriert.",
-      "Invalid email format": "Ungültiges E-Mail-Format.",
-      "Password is too weak":
-        "Das Passwort ist zu schwach. Es muss mindestens 8 Zeichen lang sein und einen Buchstaben, eine Zahl und ein Sonderzeichen enthalten.",
-      "User creation failed": "Fehler bei der Kontoerstellung.",
+      "Invalid email format": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "Email already registered": "Diese E-Mail-Adresse ist bereits registriert.",
+      "Password does not meet requirements":
+        "Das Passwort muss mindestens 8 Zeichen lang sein und Buchstaben, Zahlen sowie Sonderzeichen enthalten.",
     };
     return translations[message] || "Ein unbekannter Fehler ist aufgetreten.";
   };
 
-  // Обработчик отправки данных
+  // Функция для регистрации
   const onCreateAccount = async () => {
+    if (!validateEmail(email)) {
+      toast.error("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
+      return;
+    }
+
     if (!validatePassword(hashPassword)) {
       toast.error(
-        "Das Passwort muss mindestens 8 Zeichen lang sein, eine Zahl, einen Buchstaben und ein Sonderzeichen enthalten."
+        "Das Passwort muss mindestens 8 Zeichen lang sein und Buchstaben, Zahlen sowie Sonderzeichen enthalten."
       );
       return;
     }
 
-    const userData = {
-      firstName,
-      lastName,
-      email,
-      hashPassword,
-      role,
-    };
+    const userData = { firstName, lastName, email, hashPassword, role };
 
     try {
       const res = await fetch(
@@ -66,9 +63,9 @@ function CreateAccount() {
         }
       );
 
-      // Проверяем статус ответа
+      // Проверяем ответ сервера
       if (!res.ok) {
-        let errorMessage = "Fehler bei der Kontoerstellung.";
+        let errorMessage = "Registrierung fehlgeschlagen.";
         if (res.headers.get("content-type")?.includes("application/json")) {
           const errorData = await res.json();
           errorMessage = translateError(errorData.message || errorMessage);
@@ -77,22 +74,21 @@ function CreateAccount() {
         return;
       }
 
-      // Парсим ответ
+      // Успешная регистрация
       const data = await res.json();
       setUser(data);
       sessionStorage.setItem("user", JSON.stringify(data));
       toast.success("Konto erfolgreich erstellt!");
       router.push("/");
     } catch (error) {
-      console.error("Fehler bei der Kontoerstellung:", error);
+      console.error("Fehler bei der Registrierung:", error);
       toast.error("Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.");
     }
   };
 
-  // Перенаправление, если пользователь уже вошел
+  // Проверка, есть ли пользователь в сессии
   useEffect(() => {
-    const user = sessionStorage.getItem("user");
-    if (user) {
+    if (sessionStorage.getItem("user")) {
       router.push("/");
     }
   }, [router]);
@@ -101,7 +97,9 @@ function CreateAccount() {
     <div className="flex items-baseline justify-center my-20">
       <div className="flex flex-col items-center justify-center p-10 bg-blur-sm">
         <h2 className="font-bold text-3xl">Ein Konto erstellen</h2>
-        <h2 className="text-gray-500">Geben Sie Ihre Daten ein, um ein Konto zu erstellen</h2>
+        <h2 className="text-gray-500">
+          Geben Sie Ihre Daten ein, um ein Konto zu erstellen
+        </h2>
 
         <div className="w-full flex flex-col gap-5 mt-7">
           <Input
@@ -110,7 +108,7 @@ function CreateAccount() {
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             pattern="[A-Za-z]+"
-            title="Bitte geben Sie nur Buchstaben für den Vornamen ein"
+            title="Bitte geben Sie nur Buchstaben für den Vornamen ein."
           />
           <Input
             style={{ color: "black", backgroundColor: "white" }}
@@ -118,7 +116,7 @@ function CreateAccount() {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             pattern="[A-Za-z]+"
-            title="Bitte geben Sie nur Buchstaben für den Nachnamen ein"
+            title="Bitte geben Sie nur Buchstaben für den Nachnamen ein."
           />
           <Input
             style={{ color: "black", backgroundColor: "white" }}
@@ -136,7 +134,6 @@ function CreateAccount() {
               placeholder="Passwort"
               value={hashPassword}
               onChange={(e) => setHashPassword(e.target.value)}
-              title="Das Passwort muss mindestens eine Zahl, einen Buchstaben und 8 oder mehr Zeichen enthalten"
             />
             <button
               type="button"
@@ -150,12 +147,22 @@ function CreateAccount() {
 
           <div className="flex gap-4 px-5">
             <label>
-              <input type="radio" value="CLIENT" checked={role === "CLIENT"} onChange={() => setRole("CLIENT")} />
-              Kunde
+              <input
+                type="radio"
+                value="CLIENT"
+                checked={role === "CLIENT"}
+                onChange={() => setRole("CLIENT")}
+              />
+              Client
             </label>
             <label>
-              <input type="radio" value="MASTER" checked={role === "MASTER"} onChange={() => setRole("MASTER")} />
-              Meister
+              <input
+                type="radio"
+                value="MASTER"
+                checked={role === "MASTER"}
+                onChange={() => setRole("MASTER")}
+              />
+              Master
             </label>
           </div>
 
@@ -165,12 +172,12 @@ function CreateAccount() {
             onClick={onCreateAccount}
             disabled={!firstName || !lastName || !email || !hashPassword}
           >
-            Ein Konto erstellen
+            Konto erstellen
           </Button>
           <p>
             Ich habe bereits ein Konto{" "}
             <Link href={"/sign-in"} className="text-green-600 ml-3">
-              -Hier klicken, um sich anzumelden
+              - Hier anmelden
             </Link>
           </p>
         </div>
