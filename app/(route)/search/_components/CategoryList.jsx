@@ -47,7 +47,7 @@ function CategoryList() {
       <input
         className="mb-2 px-3 py-2 border rounded-lg w-full"
         type="text"
-        placeholder="Категория suchen..."
+        placeholder="Kategorien suchen..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
