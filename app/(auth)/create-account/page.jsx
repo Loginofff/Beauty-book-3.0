@@ -27,7 +27,9 @@ function CreateAccount() {
   // Обработчик отправки данных для создания аккаунта
   const onCreateAccount = async () => {
     if (!validatePassword(hashPassword)) {
-      toast("Пароль должен содержать букву, цифру, специальный символ и быть не менее 8 символов.");
+      toast(
+        "Пароль должен содержать букву, цифру, специальный символ и быть не менее 8 символов."
+      );
       return;
     }
 
@@ -40,14 +42,17 @@ function CreateAccount() {
     };
 
     try {
-      const res = await fetch("https://beautybook-production-c53c.up.railway.app/users/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
+      const res = await fetch(
+        "https://beautybook-production-c53c.up.railway.app/api/users/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify(userData),
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -126,7 +131,9 @@ function CreateAccount() {
               type="button"
               onClick={togglePasswordVisibility}
               className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-black"
-              aria-label={showPassword ? "Passwort verstecken" : "Passwort zeigen"}
+              aria-label={
+                showPassword ? "Passwort verstecken" : "Passwort zeigen"
+              }
             >
               {showPassword ? "👁️" : "🔒"}
             </button>
