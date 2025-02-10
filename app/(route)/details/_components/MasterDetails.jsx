@@ -51,7 +51,7 @@ function MasterDetails({ master }) {
 
   const categories = [
     { id: 1, name: "FRISEUR" },
-    { id: 2, name: "NÄGЕЛ" },
+    { id: 2, name: "NÄGEL" },
     { id: 3, name: "HAARENTFERNUNG" },
     { id: 4, name: "KOSMETIK" },
     { id: 5, name: "MASSAGE" },

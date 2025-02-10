@@ -96,7 +96,7 @@ function MasterReviews({ master }) {
               <Box display="flex" alignItems="center">
                 <Rating value={review.rating} readOnly />
                 <Typography variant="subtitle2" sx={{ marginLeft: 1 }}>
-                  {review.rating} из 5
+                  {review.rating} von 5
                 </Typography>
               </Box>
               <Typography variant="body2" color="text.secondary">
