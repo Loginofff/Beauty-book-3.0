@@ -17,7 +17,7 @@ const ClientProfile = () => {
 
     try {
       const response = await fetch(
-        `hhttps://beautybook-production-c53c.up.railway.app/api/users/${user.user_id}`,
+        `https://beautybook-production-c53c.up.railway.app/api/users/${user.user_id}`,
         {
           method: "GET",
           headers: {
