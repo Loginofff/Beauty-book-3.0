@@ -4,27 +4,26 @@ import Image from "next/image";
 function Footer() {
   return (
     <footer className="  ">
-      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="flex justify-center text-teal-600">
-          <Image
-            src="/logo3.png"
-            alt="logo"
-            width={100}
-            height={100}
-            style={{ width: "auto", height: "auto" }} // Это поможет сохранить пропорции
-          />
-        </div>
-
-        <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-black">
-          Vergessen Sie nicht, unsere Seiten in den sozialen Netzwerken zu
-          besuchen, um über die neuesten Nachrichten und Aktionen informiert zu
-          bleiben
-        </p>
+  <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
+  <div className="flex flex-col items-center mt-4">
+      <Image
+        src="/logo3.png"
+        alt="logo"
+        width={100}
+        height={100}
+        style={{ width: "auto", height: "auto", marginBottom: '2rem' }}
+      />
+  <p className="max-w-md text-center leading-relaxed text-black dark:text-[#e5e7eb]">
+        Vergessen Sie nicht, unsere Seiten in den sozialen Netzwerken zu
+        besuchen, um über die neuesten Nachrichten und Aktionen informiert zu
+        bleiben
+      </p>
+    </div>
 
         <ul className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
           <li>
             <a
-              className="text-black transition hover:text-gray-700/75"
+              className="text-black dark:text-[#e5e7eb] transition hover:text-gray-700/75 dark:hover:text-white"
               href="#"
             >
               {" "}
@@ -34,7 +33,7 @@ function Footer() {
 
           <li>
             <a
-              className="text-black transition hover:text-gray-700/75"
+              className="text-black dark:text-[#e5e7eb] transition hover:text-gray-700/75 dark:hover:text-white"
               href="#"
             >
               {" "}
@@ -44,7 +43,7 @@ function Footer() {
 
           <li>
             <a
-              className="text-black transition hover:text-gray-700/75"
+              className="text-black dark:text-[#e5e7eb] transition hover:text-gray-700/75 dark:hover:text-white"
               href="#"
             >
               {" "}
@@ -54,7 +53,7 @@ function Footer() {
 
           <li>
             <a
-              className="text-black transition hover:text-gray-700/75"
+              className="text-black dark:text-[#e5e7eb] transition hover:text-gray-700/75 dark:hover:text-white"
               href="#"
             >
               {" "}
@@ -64,7 +63,7 @@ function Footer() {
 
           <li>
             <a
-              className="text-black transition hover:text-gray-700/75"
+              className="text-black dark:text-[#e5e7eb] transition hover:text-gray-700/75 dark:hover:text-white"
               href="#"
             >
               {" "}

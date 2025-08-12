@@ -25,8 +25,8 @@ function CategorySearch() {
 
   return (
     <div className="mb-10 items-center flex flex-col gap-4 px-5">
-      <h2 className="font-bold text-4xl tracking-wide">
-        Wähle eine <span className="text-green-800">Kategorie</span>{" "}
+  <h2 className="font-bold text-3xl sm:text-4xl tracking-wide text-[#374151] dark:text-[#e5e7eb] text-center">
+        Wähle eine <span className="text-[#374151] dark:text-[#e5e7eb]">Kategorie</span>{" "}
       </h2>
 
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">

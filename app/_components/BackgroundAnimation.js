@@ -6,10 +6,14 @@ function BackgroundAnimation() {
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid slice"
       style={{
-        position: "absolute",
-        width: "100%",
-        height: "350%",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        minHeight: "100vh",
         zIndex: "-1",
+        pointerEvents: "none"
       }}
     >
       <defs>
