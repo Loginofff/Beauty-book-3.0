@@ -25,9 +25,12 @@ function CategorySearch() {
 
   return (
     <div className="mb-10 items-center flex flex-col gap-4 px-5">
-  <h2 className="font-bold text-3xl sm:text-4xl tracking-wide text-[#374151] dark:text-[#e5e7eb] text-center">
-        Wähle eine <span className="text-[#374151] dark:text-[#e5e7eb]">Kategorie</span>{" "}
-      </h2>
+  <h2
+    className="font-bold text-3xl sm:text-4xl tracking-wide text-center bg-gradient-to-r from-[#43ea7c] to-[#006400ff] bg-clip-text text-transparent"
+    style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+  >
+    Wähle eine <span className="bg-gradient-to-r from-[#43ea7c] to-[#006400ff] bg-clip-text text-transparent" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Kategorie</span>{" "}
+  </h2>
 
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {categoryList.slice(0, 6).map((item) => {

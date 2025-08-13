@@ -146,6 +146,7 @@ function Search({ params }) {
                   }`}
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
+                  aria-label="Previous page"
                 >
                   ←
                 </button>
@@ -162,6 +163,7 @@ function Search({ params }) {
                     setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                   }
                   disabled={currentPage === totalPages}
+                  aria-label="Next page"
                 >
                   →
                 </button>
