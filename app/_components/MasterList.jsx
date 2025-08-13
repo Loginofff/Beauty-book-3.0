@@ -4,7 +4,8 @@ import MasterRating from "../(route)/details/_components/Rating";
 import Image from "next/image";
 
 function MasterList() {
-  const mastersListRef = useRef(null);
+  const isFirstLoad = useRef(true);
+  const titleRef = useRef(null);
   const categories = [
     { id: 1, name: "FRISEUR" },
     { id: 2, name: "NÄGEL" },
@@ -17,6 +18,7 @@ function MasterList() {
   const [displayedMasters, setDisplayedMasters] = useState([]);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(12);
+  const [isPaginating, setIsPaginating] = useState(false);
 
   // Меняем размер страницы на 5 для мобильных устройств
   useEffect(() => {
@@ -45,10 +47,18 @@ function MasterList() {
       }
     };
     getMasterList();
-    if (mastersListRef.current) {
-      mastersListRef.current.scrollIntoView({ behavior: "smooth" });
-    }
   }, [page, size]);
+
+  // Скроллим к списку мастеров только если была пагинация
+  useEffect(() => {
+    if (isPaginating) {
+      const gridDiv = document.getElementById('master-list-grid');
+      if (gridDiv) {
+        gridDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      setIsPaginating(false);
+    }
+  }, [page, isPaginating]);
 
   function getCategoryNames(categoryIds) {
     return categoryIds
@@ -65,9 +75,9 @@ function MasterList() {
   return (
     <div>
       <div className="mb-10 px-8">
-        <h2 className="font-bold text-xl ">Beliebte Meister</h2>
-        <div ref={mastersListRef}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 mt-4">
+        <h2 ref={titleRef} className="font-bold text-xl ">Beliebte Meister</h2>
+        <div>
+          <div id="master-list-grid" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 mt-4">
             {displayedMasters.map((master, index) => (
               <div
                 className="border-[1px] rounded-lg p-3 cursor-pointer hover:border-green-700 hover:shadow-sm transition-all ease-in-out"
@@ -111,7 +121,10 @@ function MasterList() {
       <div className="flex justify-center gap-4 mt-6">
         <button
           className="px-3 py-2 border rounded-lg mx-1 bg-transparent text-green-700 disabled:text-gray-300 text-2xl transition-colors"
-          onClick={() => setPage((p) => Math.max(0, p - 1))}
+          onClick={() => {
+            setIsPaginating(true);
+            setPage((p) => Math.max(0, p - 1));
+          }}
           disabled={page === 0}
           aria-label="Vorherige Seite"
         >
@@ -119,7 +132,10 @@ function MasterList() {
         </button>
         <button
           className="px-3 py-2 border rounded-lg mx-1 bg-transparent text-green-700 disabled:text-gray-300 text-2xl transition-colors"
-          onClick={() => setPage((p) => p + 1)}
+          onClick={() => {
+            setIsPaginating(true);
+            setPage((p) => p + 1);
+          }}
           disabled={displayedMasters.length < size}
           aria-label="Nächste Seite"
         >
